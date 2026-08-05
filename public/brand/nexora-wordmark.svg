@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 410 96" role="img" aria-labelledby="title description">
+  <title id="title">Nexora</title>
+  <desc id="description">Nexora gradient portal mark and wordmark</desc>
+  <defs>
+    <linearGradient id="aurora" x1="8" y1="8" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop stop-color="oklch(0.64 0.24 290)"/><stop offset="1" stop-color="oklch(0.77 0.13 194)"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="80" height="80" rx="24" fill="url(#aurora)"/>
+  <path d="M29 66V30l38 36V30" fill="none" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M31 29l36 38" stroke="white" stroke-opacity=".32" stroke-width="2"/>
+  <text x="116" y="64" fill="currentColor" font-family="Geist, Inter, Arial, sans-serif" font-size="50" font-weight="760" letter-spacing="5">NEXORA</text>
+</svg>

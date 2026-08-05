@@ -1,0 +1,758 @@
+{
+  "Metadata": {
+    "title": "Nexora — Digital life, delivered",
+    "description": "Top-ups, subscriptions, gift cards, and digital services in one trusted wallet."
+  },
+  "Auth": {
+    "home": "Nexora home",
+    "eyebrow": "Secure identity",
+    "protected": "Protected by device-aware security",
+    "storyTitle": "One account for your entire digital life.",
+    "storyDescription": "Buy, track, resell, earn, and get support through one protected identity.",
+    "storyPoint1": "Passwordless, social, phone, and password sign-in",
+    "storyPoint2": "Authenticator-based two-factor protection",
+    "storyPoint3": "Remote device and session control",
+    "signInTitle": "Welcome back",
+    "signInDescription": "Choose the fastest secure way to continue.",
+    "signupTitle": "Create your account",
+    "signupDescription": "Set up your trusted digital wallet identity.",
+    "forgotpasswordTitle": "Recover access",
+    "forgotpasswordDescription": "We will send a protected password reset link.",
+    "resetpasswordTitle": "Choose a new password",
+    "resetpasswordDescription": "Use a unique password you have not used elsewhere.",
+    "mfaTitle": "Two-factor verification",
+    "mfaDescription": "Enter the current code from your authenticator app.",
+    "methodLabel": "Sign-in method",
+    "email": "Email address",
+    "emailPlaceholder": "you@example.com",
+    "displayName": "Display name",
+    "phone": "Mobile number",
+    "phonePlaceholder": "+961 70 000 000",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "passwordHint": "At least 12 characters.",
+    "verificationCode": "Verification code",
+    "marketingConsent": "Send me relevant product news and offers",
+    "magicLink": "Magic link",
+    "phoneOtp": "Phone",
+    "forgotPassword": "Forgot password?",
+    "signInAction": "Continue securely",
+    "signupAction": "Create protected account",
+    "forgotpasswordAction": "Send reset link",
+    "resetpasswordAction": "Save new password",
+    "mfaAction": "Verify and continue",
+    "sendCode": "Send verification code",
+    "orContinue": "or continue with",
+    "google": "Google",
+    "apple": "Apple",
+    "newHere": "New to Nexora?",
+    "createAccount": "Create an account",
+    "alreadyMember": "Already a member?",
+    "successTitle": "Check complete",
+    "errorTitle": "We could not complete that",
+    "success": {
+      "verify_email": "Check your inbox and use the secure link to continue.",
+      "account": "Your identity is verified. Redirecting to your account.",
+      "mfa": "Password accepted. Complete two-factor verification.",
+      "default": "The verification request was sent successfully."
+    },
+    "errors": {
+      "invalid_input": "Review the highlighted details and try again.",
+      "invalid_credentials": "The email or password is incorrect.",
+      "account_exists": "An account already exists for this email.",
+      "email_unverified": "Verify your email before signing in.",
+      "code_expired": "That code expired. Request a new one.",
+      "rate_limited": "Too many attempts. Wait a moment and retry.",
+      "oauth_failed": "The social sign-in could not be started.",
+      "callback_failed": "The verification link is invalid or expired.",
+      "auth_failed": "Authentication failed. Please try again.",
+      "save_failed": "Your security setting could not be saved."
+    },
+    "verifyEmail": {
+      "eyebrow": "Email verification",
+      "title": "Check your inbox",
+      "description": "Your account is ready as soon as your email is confirmed.",
+      "sentTitle": "Verification link sent",
+      "sentDescription": "We sent a protected link to {email}.",
+      "errorTitle": "Link not sent",
+      "resend": "Resend verification email",
+      "back": "Back to sign in"
+    }
+  },
+  "AccountShell": {
+    "home": "Nexora home",
+    "toggleSidebar": "Toggle sidebar",
+    "openMenu": "Open account menu",
+    "accountNavigation": "Account navigation",
+    "adminNavigation": "Administration navigation",
+    "signOut": "Sign out",
+    "administrator": "Administrator",
+    "member": "Nexora member",
+    "account": "Account",
+    "admin": "Admin",
+    "current": "Overview",
+    "quickActions": "Quick actions",
+    "nav": {
+      "overview": "Overview",
+      "profile": "Profile",
+      "security": "Security",
+      "notifications": "Notifications",
+      "preferences": "Preferences",
+      "identity": "Identity & access",
+      "settings": "Platform settings"
+    }
+  },
+  "Account": {
+    "saved": "Changes saved",
+    "savedDescription": "Your account has been updated securely.",
+    "saveError": "Changes were not saved",
+    "errors": {
+      "save_failed": "Check the details and try again.",
+      "session_revoke_failed": "That device session could not be revoked.",
+      "invalid_avatar": "Choose a JPG, PNG, or WebP image up to 5 MB.",
+      "avatar_upload_failed": "The profile image could not be uploaded."
+    },
+    "overview": {
+      "eyebrow": "Your Nexora",
+      "title": "Account control center",
+      "description": "Manage your identity, protection, channels, and regional experience.",
+      "role": "Active role: {role}",
+      "roles": {
+        "customer": "Customer",
+        "reseller": "Reseller",
+        "affiliate": "Affiliate",
+        "support": "Support",
+        "fulfiller": "Fulfiller",
+        "finance": "Finance",
+        "admin": "Administrator",
+        "owner": "Owner"
+      },
+      "denied": "Your account does not have permission to open that area.",
+      "open": "Open settings",
+      "profile": {
+        "title": "Personal profile",
+        "description": "Identity, contact, country, and consent."
+      },
+      "security": {"title": "Security", "description": "Two-factor protection and active devices."},
+      "notifications": {
+        "title": "Notifications",
+        "description": "Control each channel and message category."
+      },
+      "preferences": {
+        "title": "Regional preferences",
+        "description": "Language, currency, and timezone."
+      }
+    },
+    "profile": {
+      "eyebrow": "Identity",
+      "title": "Personal profile",
+      "description": "Keep your delivery and support details accurate.",
+      "formTitle": "Profile details",
+      "formDescription": "Protected attributes such as role and KYC status cannot be edited here.",
+      "displayName": "Display name",
+      "avatar": "Choose a profile image",
+      "avatarDescription": "Drop a new image here or browse your device",
+      "avatarLimits": "JPG, PNG, or WebP · up to 5 MB",
+      "avatarPreview": "Profile image preview",
+      "avatarRemove": "Remove selected profile image",
+      "uploadAvatar": "Upload avatar",
+      "phone": "Mobile number",
+      "country": "Country code",
+      "timezone": "Timezone",
+      "marketing": "Receive relevant product news and offers",
+      "save": "Save profile"
+    },
+    "preferences": {
+      "eyebrow": "Localization",
+      "title": "Language and currency",
+      "description": "Your formats follow these choices on every device.",
+      "formTitle": "Regional experience",
+      "formDescription": "Only languages and currencies enabled by an administrator appear here.",
+      "language": "Language",
+      "currency": "Currency",
+      "timezone": "Timezone",
+      "save": "Save preferences"
+    },
+    "notifications": {
+      "eyebrow": "Notification matrix",
+      "title": "Stay informed your way",
+      "description": "Choose which message types arrive on every enabled channel.",
+      "transactional": "Transactions and receipts",
+      "orders": "Order and delivery updates",
+      "promotions": "Offers and product news",
+      "securityAlwaysOn": "Critical security alerts are always enabled.",
+      "channels": {
+        "email": "Email",
+        "whatsapp": "WhatsApp",
+        "telegram": "Telegram",
+        "push": "Web Push",
+        "in_app": "In-app"
+      },
+      "channelDescriptions": {
+        "email": "Detailed receipts and account notices.",
+        "whatsapp": "Fast delivery and payment updates.",
+        "telegram": "Bot notifications for active orders.",
+        "push": "Timely updates on this device.",
+        "in_app": "A complete notification history inside Nexora."
+      }
+    },
+    "security": {
+      "eyebrow": "Account protection",
+      "title": "Security and devices",
+      "description": "Add a second factor and remove access from any device.",
+      "mfaTitle": "Authenticator 2FA",
+      "mfaDescription": "Require a rotating six-digit code after password sign-in.",
+      "enabled": "Enabled",
+      "authenticator": "Authenticator app",
+      "enable": "Set up authenticator",
+      "disable": "Disable",
+      "qrAlt": "Authenticator enrollment QR code",
+      "scanQr": "Scan this code, or enter the secret manually.",
+      "copySecret": "Copy secret",
+      "code": "Six-digit code",
+      "verify": "Verify and enable",
+      "sessionsTitle": "Active devices",
+      "sessionsDescription": "Revoking a device blocks its next token refresh.",
+      "devices": {
+        "mobile": "Mobile browser",
+        "desktop": "Desktop browser",
+        "unknown": "Unknown device"
+      },
+      "lastSeen": "Last seen {date, date, medium}",
+      "revoke": "Revoke",
+      "noSessions": "No active device records yet.",
+      "signOutEverywhere": "Sign out on every device"
+    }
+  },
+  "ProtectedAreas": {
+    "admin": {
+      "eyebrow": "Role-protected workspace",
+      "title": "Administration",
+      "description": "Only administrators and owners can reach this route.",
+      "guardTitle": "Authorization is active",
+      "guardDescription": "Middleware and the server component independently verified the active role."
+    },
+    "reseller": {
+      "title": "Reseller portal",
+      "description": "Wholesale pricing and API access are available only to verified reseller roles."
+    }
+  },
+  "AuthEmails": {
+    "verify": {
+      "subject": "Verify your Nexora account",
+      "title": "Confirm your email",
+      "description": "Use the protected link below to finish creating your account.",
+      "action": "Verify email",
+      "expiry": "If you did not request this account, you can ignore this email."
+    },
+    "magicLink": {
+      "subject": "Your Nexora secure sign-in link",
+      "title": "Continue to Nexora",
+      "description": "This single-use link signs you in without a password.",
+      "action": "Sign in securely",
+      "expiry": "The link expires automatically for your protection."
+    },
+    "passwordReset": {
+      "subject": "Reset your Nexora password",
+      "title": "Choose a new password",
+      "description": "Use the protected link below to set a new password.",
+      "action": "Reset password",
+      "expiry": "If you did not request this change, secure your account immediately."
+    }
+  },
+  "Navigation": {
+    "mobileNavigation": "Mobile navigation",
+    "primaryNavigation": "Primary navigation",
+    "palette": {
+      "title": "Command palette",
+      "description": "Search navigation and quick actions",
+      "placeholder": "Search products, orders, or actions…",
+      "escape": "ESC",
+      "noResults": "No results found.",
+      "quickActions": "Quick actions",
+      "command": "Nexora command",
+      "navigate": "Navigate",
+      "open": "Open"
+    },
+    "products": "Products",
+    "deals": "Flash deals",
+    "track": "Track order",
+    "wallet": "Wallet",
+    "signIn": "Sign in",
+    "home": "Home",
+    "orders": "Orders",
+    "support": "Support",
+    "openMenu": "Open menu",
+    "command": "Quick search",
+    "search": "Search",
+    "balance": "Wallet balance",
+    "cart": "Cart",
+    "megaNote": "Instant and protected delivery",
+    "browseAll": "Browse all products",
+    "howItWorks": "How it works",
+    "mobileDescription": "Everything digital, within thumb's reach."
+  },
+  "Hero": {
+    "eyebrow": "The digital marketplace for MENA",
+    "titleStart": "Everything digital.",
+    "titleAccent": "One trusted wallet.",
+    "description": "Instant top-ups, subscriptions, gift cards, social growth, and expert services—with live delivery tracking from payment to done.",
+    "searchPlaceholder": "Search PUBG, Netflix, iTunes, design…",
+    "searchLabel": "Search all digital products",
+    "searchAction": "Search",
+    "popular": "Popular",
+    "popularItems": "PUBG UC,Netflix,USDT,Instagram",
+    "ordersDelivered": "orders delivered",
+    "deliveryTime": "median delivery",
+    "support": "human support",
+    "live": "Live"
+  },
+  "Trust": {
+    "secure": "Protected checkout",
+    "instant": "Instant delivery",
+    "local": "Built for Lebanon",
+    "global": "Available worldwide"
+  },
+  "Categories": {
+    "eyebrow": "One place. Every digital need.",
+    "title": "Choose where to start",
+    "description": "Transparent pricing, local payment methods, and live status on every order.",
+    "browse": "Browse category",
+    "gameTitle": "Game top-ups",
+    "gameDescription": "UC, diamonds, credits, and passes delivered to your player ID.",
+    "subscriptionTitle": "Subscriptions",
+    "subscriptionDescription": "Entertainment and productivity plans with clear warranty terms.",
+    "giftTitle": "Gift cards",
+    "giftDescription": "Region-matched codes from trusted inventory, delivered instantly.",
+    "socialTitle": "Social growth",
+    "socialDescription": "Flexible, trackable campaigns with quantity and drip-feed controls.",
+    "serviceTitle": "Digital services",
+    "serviceDescription": "Design, development, video, and writing with protected milestones."
+  },
+  "Spotlight": {
+    "eyebrow": "A better way to pay",
+    "title": "Top up once. Move at digital speed.",
+    "description": "Your Nexora Wallet makes every checkout instant while keeping refunds, cashback, and affiliate earnings in one auditable balance.",
+    "cta": "Explore the wallet",
+    "cardLabel": "Nexora Wallet",
+    "available": "Available balance",
+    "owner": "YOUR DIGITAL LIFE",
+    "status": "Protected",
+    "instant": "Instant checkout",
+    "cashback": "Cashback ready"
+  },
+  "Controls": {
+    "language": "Language",
+    "theme": "Theme",
+    "currency": "Currency",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "english": "English",
+    "arabic": "Arabic"
+  },
+  "A11y": {
+    "skip": "Skip to content"
+  },
+  "Footer": {
+    "location": "Beirut · Dubai · Worldwide",
+    "tagline": "The trusted home for every digital thing you buy, use, and love.",
+    "online": "Systems operational",
+    "secure": "Protected by design",
+    "shop": "Shop",
+    "topups": "Game top-ups",
+    "subscriptions": "Subscriptions",
+    "giftCards": "Gift cards",
+    "services": "Digital services",
+    "platform": "Platform",
+    "wallet": "Nexora Wallet",
+    "resellers": "For resellers",
+    "affiliates": "Affiliate program",
+    "api": "Developer API",
+    "company": "Company",
+    "about": "About Nexora",
+    "support": "Help center",
+    "blog": "Journal",
+    "status": "Service status",
+    "newsletter": "The digital drop",
+    "newsletterDescription": "Fresh deals and useful digital picks. No noise.",
+    "email": "Email address",
+    "join": "Join newsletter",
+    "rights": "© {year} Nexora. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies"
+  },
+  "ErrorPage": {
+    "eyebrow": "Something went off track",
+    "title": "We could not load this page.",
+    "description": "Your data is safe. Try again, or return in a moment.",
+    "retry": "Try again"
+  },
+  "Marketing": {
+    "hero": {
+      "eyebrow": "Lebanon's digital marketplace, reimagined",
+      "new": "Now live",
+      "title": "Your digital world.",
+      "accent": "Delivered beautifully.",
+      "description": "Games, subscriptions, gift cards, social growth, and expert services—one protected checkout, one live timeline, one trusted wallet.",
+      "searchLabel": "Search digital products",
+      "searchPlaceholder": "What do you need today?",
+      "searchAction": "Explore",
+      "trending": "Trending",
+      "trendingItems": ["PUBG UC", "Netflix", "PlayStation", "Instagram"],
+      "searchItems": [
+        {"name": "PUBG Mobile UC", "category": "Game top-up", "price": "From $4.99"},
+        {"name": "Netflix Premium", "category": "Subscription", "price": "$13.50"},
+        {"name": "PlayStation Store", "category": "Gift card", "price": "From $10"},
+        {"name": "Instagram Growth", "category": "Social service", "price": "From $2.90"}
+      ],
+      "primary": "Shop digital",
+      "secondary": "Meet the wallet",
+      "socialProof": "Loved by 24,000+ customers",
+      "protected": "Buyer protection included"
+    },
+    "trust": {
+      "label": "Nexora platform statistics",
+      "orders": "orders delivered",
+      "delivery": "median delivery",
+      "rating": "customer rating",
+      "support": "real human support"
+    },
+    "categories": {
+      "eyebrow": "One store, every digital need",
+      "title": "Start with what moves you.",
+      "description": "Carefully sourced products, transparent details, and delivery you can actually follow.",
+      "explore": "Explore category",
+      "items": [
+        {
+          "title": "Game top-ups",
+          "description": "UC, diamonds, credits, and passes delivered directly to your player ID.",
+          "meta": "120+ games"
+        },
+        {
+          "title": "Subscriptions",
+          "description": "Entertainment and productivity plans with clear account and warranty terms.",
+          "meta": "Instant access"
+        },
+        {
+          "title": "Gift cards",
+          "description": "Region-matched codes from trusted inventory, ready the moment you pay.",
+          "meta": "30+ brands"
+        },
+        {
+          "title": "Social growth",
+          "description": "Flexible, trackable campaigns with quantity and drip-feed control.",
+          "meta": "Live progress"
+        },
+        {
+          "title": "Digital services",
+          "description": "Design, development, video, and writing through protected milestones.",
+          "meta": "Expert talent"
+        }
+      ]
+    },
+    "featured": {
+      "eyebrow": "Popular right now",
+      "title": "Digital favorites, ready to go.",
+      "description": "Live pricing and delivery estimates from products customers trust every day.",
+      "previous": "Previous products",
+      "next": "Next products",
+      "favorite": "Add to favorites",
+      "flash": "Flash drop",
+      "flashDeal": "Up to 20% off selected gift cards",
+      "viewDeals": "View deals",
+      "items": [
+        {
+          "name": "PUBG Mobile 600 UC",
+          "category": "Game top-up",
+          "badge": "Best seller",
+          "mark": "UC",
+          "price": 2499,
+          "previous": 2999,
+          "delivery": "Under 60 sec"
+        },
+        {
+          "name": "Netflix Premium · 1 month",
+          "category": "Subscription",
+          "badge": "Save 18%",
+          "mark": "N",
+          "price": 1350,
+          "previous": 1650,
+          "delivery": "Instant"
+        },
+        {
+          "name": "PlayStation Store $50",
+          "category": "Gift card · US",
+          "badge": "Verified code",
+          "mark": "PS",
+          "price": 5099,
+          "previous": 5399,
+          "delivery": "Instant"
+        },
+        {
+          "name": "Instagram 5K followers",
+          "category": "Social growth",
+          "badge": "Gradual delivery",
+          "mark": "IG",
+          "price": 2890,
+          "previous": 3400,
+          "delivery": "1–3 days"
+        },
+        {
+          "name": "Logo identity sprint",
+          "category": "Digital service",
+          "badge": "Expert pick",
+          "mark": "NX",
+          "price": 14900,
+          "previous": 17900,
+          "delivery": "3–5 days"
+        }
+      ]
+    },
+    "steps": {
+      "eyebrow": "Simple by design",
+      "title": "From search to delivered in three steps.",
+      "description": "No mystery screens. You always know the price, the requirement, and what happens next.",
+      "items": [
+        {
+          "title": "Choose your digital item",
+          "description": "Search the entire marketplace or explore a focused category."
+        },
+        {
+          "title": "Pay your way",
+          "description": "Use your wallet, Whish, OMT, card, crypto, or bank transfer."
+        },
+        {
+          "title": "Follow every moment",
+          "description": "Watch the live timeline until your product or service is delivered."
+        }
+      ]
+    },
+    "wallet": {
+      "eyebrow": "The fastest way through Nexora",
+      "title": "A wallet that makes digital feel instant.",
+      "description": "Top up once, then buy in one tap. Refunds, cashback, affiliate earnings, and purchases stay clear in one protected ledger.",
+      "benefits": ["One-tap checkout", "Instant refunds to balance", "Cashback and VIP rewards"],
+      "cta": "Explore Nexora Wallet",
+      "balance": "Available balance",
+      "tier": "PLATINUM",
+      "instantTitle": "Instant checkout",
+      "instantDetail": "Paid in 0.4 seconds",
+      "cashbackTitle": "Cashback earned",
+      "cashbackDetail": "+$4.20 this month"
+    },
+    "payments": {
+      "title": "Pay locally. Pay globally. Always protected.",
+      "secure": "Encrypted payment handling and verified delivery"
+    },
+    "testimonials": {
+      "eyebrow": "Trusted in the moments that matter",
+      "title": "Customers come for speed. They stay for certainty.",
+      "description": "Real experiences from customers and resellers across Lebanon and the region.",
+      "items": [
+        {
+          "quote": "My PUBG order arrived before I could leave the checkout page. The timeline makes the experience feel genuinely premium.",
+          "name": "Rami K.",
+          "role": "Customer · Beirut",
+          "initials": "RK"
+        },
+        {
+          "quote": "I replaced three different suppliers with Nexora. Wallet reconciliation and the reseller pricing are exactly what I needed.",
+          "name": "Maya A.",
+          "role": "Gold reseller · Dubai",
+          "initials": "MA"
+        },
+        {
+          "quote": "The first digital service marketplace where milestones and delivery actually feel safe for both sides.",
+          "name": "Jad N.",
+          "role": "Founder · Tripoli",
+          "initials": "JN"
+        }
+      ]
+    },
+    "faq": {
+      "eyebrow": "Clear answers",
+      "title": "Everything you need to feel certain.",
+      "description": "Still wondering about a product or payment method? A real support specialist is always close.",
+      "support": "Talk to support",
+      "items": [
+        {
+          "question": "How quickly will my order arrive?",
+          "answer": "Automatic products usually arrive in seconds. Every product shows an honest delivery estimate before checkout, and manual services include a visible SLA."
+        },
+        {
+          "question": "Which payment methods can I use in Lebanon?",
+          "answer": "You can use Nexora Wallet, Whish Money, OMT, Visa or Mastercard, supported crypto networks, bank transfer, and approved cash flows."
+        },
+        {
+          "question": "What happens if delivery fails?",
+          "answer": "Our hybrid fulfillment automatically moves eligible failures to a staffed queue. If delivery cannot be completed, the order follows its protected refund policy."
+        },
+        {
+          "question": "Are gift-card codes and accounts guaranteed?",
+          "answer": "Warranty terms are shown per product and variant. Verified codes are atomically assigned from private inventory and cannot be delivered twice."
+        },
+        {
+          "question": "Can I sell through Nexora?",
+          "answer": "Yes. Resellers receive wholesale tiers, a dedicated dashboard, signed API access, sandbox mode, and delivery webhooks."
+        }
+      ]
+    },
+    "cta": {
+      "eyebrow": "Your next digital thing is closer than ever",
+      "title": "Ready when you are.",
+      "description": "Join a marketplace built around speed, protection, and the way MENA actually pays.",
+      "primary": "Start exploring",
+      "secondary": "Create an account",
+      "note": "No subscription required · Buyer protection included"
+    }
+  },
+  "DesignSystem": {
+    "copy": "Copy",
+    "copied": "Copied to clipboard",
+    "palette": {
+      "title": "Command palette",
+      "description": "Search design-system sections and examples",
+      "placeholder": "Search components and tokens…",
+      "escape": "ESC",
+      "noResults": "No results found.",
+      "quickActions": "Quick actions",
+      "command": "Nexora command",
+      "navigate": "Navigate",
+      "open": "Open"
+    },
+    "nav": [
+      "Tokens",
+      "Typography",
+      "Actions",
+      "Forms",
+      "Surfaces",
+      "Navigation",
+      "Feedback",
+      "Data display",
+      "Motion",
+      "Shells"
+    ],
+    "jumpTo": "Jump to section",
+    "version": "System version",
+    "title": "Nexora design system",
+    "description": "The living visual language for a digital marketplace that feels fast, trustworthy, and unmistakably premium in every locale.",
+    "darkFirst": "Dark-first",
+    "command": "Command",
+    "tokens": {
+      "title": "Tokens",
+      "description": "A single source of truth for color, depth, spacing, radii, blur, motion, and semantic meaning.",
+      "colorScales": "Brand color scales",
+      "semantic": "Semantic tokens",
+      "foundations": "Shape, depth, and rhythm"
+    },
+    "typography": {
+      "title": "Typography",
+      "description": "Fluid, deliberate type with locale-specific rhythm and zero layout shift.",
+      "arabic": "Display Arabic / IBM Plex Sans Arabic 700"
+    },
+    "actions": {
+      "title": "Actions",
+      "description": "Expressive controls with predictable hierarchy, spring feedback, and complete states.",
+      "buttons": "Button variants and states",
+      "badges": "Badges and tags"
+    },
+    "forms": {
+      "title": "Forms",
+      "description": "High-clarity inputs for simple sign-in and complex product requirements alike.",
+      "fields": "Fields and selection",
+      "email": "Email address",
+      "playerId": "Player ID",
+      "invalid": "Invalid state",
+      "helper": "We will only use this for your receipt.",
+      "error": "Use the ID shown inside your game profile.",
+      "notes": "Order notes",
+      "notesPlaceholder": "Anything our team should know?",
+      "select": "Choose account type",
+      "combobox": "Billing country",
+      "comboboxSearch": "Search countries…",
+      "comboboxEmpty": "No countries found",
+      "privateAccount": "Private account",
+      "sharedAccount": "Shared account",
+      "countries": {"lb": "Lebanon", "ae": "United Arab Emirates", "sa": "Saudi Arabia"},
+      "choices": "Choices and controls",
+      "save": "Save this cart for later",
+      "disabled": "Unavailable option",
+      "instant": "Instant delivery",
+      "manual": "Manual delivery",
+      "notifications": "Delivery notifications",
+      "dripFeed": "Enable drip-feed",
+      "quantity": "Delivery speed",
+      "otp": "One-time password",
+      "upload": "File upload",
+      "dropzone": "Upload payment proof",
+      "dropzoneDescription": "Drop files here or browse your device",
+      "dropzoneLimits": "PNG, JPG, or PDF · up to 10 MB",
+      "dropzonePreview": "Selected file preview",
+      "dropzoneRemove": "Remove selected file"
+    },
+    "surfaces": {
+      "title": "Surfaces",
+      "description": "Layered, tactile containers that communicate depth without visual noise.",
+      "cardTitle": "Platinum progress",
+      "cardDescription": "Spend $42 more to unlock the next reward.",
+      "walletCard": "Your fastest and most rewarding checkout.",
+      "hover": "Hover for help",
+      "tooltip": "This value updates in real time.",
+      "popoverTitle": "Live price",
+      "popoverDescription": "Rates refresh automatically and are locked when you quote."
+    },
+    "navigation": {
+      "title": "Navigation and overlays",
+      "description": "Keyboard-ready movement across pages, layers, and mobile contexts.",
+      "tabs": "Tabs",
+      "tabContent": "Your live account overview appears here.",
+      "menus": "Menus and layered surfaces",
+      "dialogTitle": "Confirm manual adjustment",
+      "dialogDescription": "Every adjustment requires a reason and is written to the audit log.",
+      "sheetTitle": "Mobile navigation",
+      "sheetDescription": "Thumb-friendly access to every major destination.",
+      "drawerTitle": "Continue checkout",
+      "drawerDescription": "Your quote is locked for the next ten minutes."
+    },
+    "feedback": {
+      "title": "Feedback and states",
+      "description": "Every result is designed: success, warning, failure, loading, and absence.",
+      "success": "Payment confirmed",
+      "successDetail": "Your wallet balance is ready to use.",
+      "info": "Live delivery update",
+      "infoDetail": "Your supplier accepted the order.",
+      "warning": "Proof needs review",
+      "warningDetail": "A finance specialist will check it shortly.",
+      "danger": "Delivery paused",
+      "dangerDetail": "We need one detail before continuing.",
+      "progress": "Progress, rating, and toast",
+      "emptyTitle": "Nothing here yet",
+      "emptyDescription": "Explore the catalog and your first order will appear here.",
+      "errorTitle": "We could not load this view",
+      "errorDescription": "Your data is safe. Try again in a moment."
+    },
+    "data": {
+      "title": "Data display",
+      "description": "Dense operational information remains elegant, legible, and interactive in both directions.",
+      "countdown": "A token-driven countdown with stable numerals.",
+      "animated": "orders delivered"
+    },
+    "motion": {
+      "title": "Motion",
+      "description": "Purposeful motion reinforces space, state, and delight—and disappears when the user asks.",
+      "hoverLift": "Spring elevation",
+      "tilt": "Pointer-aware depth",
+      "shine": "Light sweep highlight",
+      "fade": "Viewport entrance"
+    },
+    "shells": {
+      "title": "Layout shells",
+      "description": "One visual language, tuned for storefront discovery, customer focus, and dense admin work.",
+      "store": "Storefront shell",
+      "account": "Account shell",
+      "admin": "Admin shell"
+    }
+  }
+}
