@@ -12,6 +12,7 @@ import {Button} from '@/components/ui/button';
 import {Checkbox, Input, OtpField} from '@/components/ui/form-controls';
 import {Alert, Tabs, TabsList, TabsTrigger} from '@/components/ui/surfaces';
 import {Link} from '@/i18n/navigation';
+import {publicEnvironment} from '@/lib/env/public';
 import {
   requestPasswordResetAction,
   resetPasswordAction,
@@ -271,12 +272,14 @@ export function AuthPanel({mode, factorId}: {mode: AuthMode; factorId?: string})
                 {t('google')}
               </Button>
             </form>
-            <form action={startOAuthAction.bind(null, 'apple', locale)}>
-              <Button type="submit" variant="outline">
-                <Apple aria-hidden="true" />
-                {t('apple')}
-              </Button>
-            </form>
+            {publicEnvironment.NEXT_PUBLIC_APPLE_OAUTH_ENABLED ? (
+              <form action={startOAuthAction.bind(null, 'apple', locale)}>
+                <Button type="submit" variant="outline">
+                  <Apple aria-hidden="true" />
+                  {t('apple')}
+                </Button>
+              </form>
+            ) : null}
           </div>
           <p className="auth-switch">
             {t('newHere')} <Link href="/auth/sign-up">{t('createAccount')}</Link>
