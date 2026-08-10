@@ -94,12 +94,14 @@
     "quickActions": "Quick actions",
     "nav": {
       "overview": "Overview",
+      "wallet": "Wallet",
       "profile": "Profile",
       "security": "Security",
       "notifications": "Notifications",
       "preferences": "Preferences",
       "identity": "Identity & access",
       "catalog": "Catalog",
+      "wallets": "Wallets",
       "settings": "Platform settings"
     }
   },
@@ -754,6 +756,123 @@
       "store": "Storefront shell",
       "account": "Account shell",
       "admin": "Admin shell"
+    }
+  },
+  "Wallet": {
+    "metaTitle": "Wallet",
+    "title": "Your wallet",
+    "description": "One secure balance for instant purchases, refunds, rewards, and payouts.",
+    "protected": "Double-entry protected",
+    "available": "Available balance",
+    "held": "On hold",
+    "frozen": "Frozen",
+    "statement": {
+      "title": "Account statement",
+      "description": "Every movement is permanently recorded and independently balanced."
+    },
+    "filters": {
+      "allCurrencies": "All currencies",
+      "allTypes": "All transaction types",
+      "from": "From",
+      "to": "To",
+      "apply": "Apply filters",
+      "clear": "Clear"
+    },
+    "export": {"csv": "Download CSV", "pdf": "Download PDF"},
+    "empty": {
+      "title": "No transactions yet",
+      "description": "Your purchases, top-ups, holds, and rewards will appear here."
+    },
+    "details": "View transaction details",
+    "pagination": {
+      "page": "Page {page} of {pages}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "types": {
+      "topup": "Wallet top-up",
+      "top_up": "Wallet top-up",
+      "purchase": "Purchase",
+      "refund": "Refund",
+      "commission": "Commission",
+      "affiliate_commission": "Affiliate commission",
+      "cashback": "Cashback",
+      "bonus": "Bonus",
+      "admin_adjustment": "Admin adjustment",
+      "hold": "Funds held",
+      "release": "Funds released",
+      "payout": "Payout",
+      "fee": "Fee",
+      "chargeback": "Chargeback"
+    },
+    "detail": {
+      "back": "Back to wallet",
+      "status": "Status",
+      "reference": "Reference",
+      "transactionId": "Transaction ID",
+      "copy": "Copy",
+      "copied": "Copied",
+      "reason": "Reason"
+    },
+    "status": {"posted": "Posted", "reversed": "Reversed"}
+  },
+  "WalletAdmin": {
+    "eyebrow": "Financial control",
+    "title": "Wallet operations",
+    "description": "Inspect immutable ledgers, freeze access, and create fully audited adjustments.",
+    "search": "Search customers",
+    "ledger": "Customer ledger",
+    "audited": "Fully audited",
+    "frozen": "Frozen",
+    "held": "Held",
+    "recent": "Recent ledger entries",
+    "export": {"csv": "Export CSV", "pdf": "Export PDF"},
+    "adjustment": {
+      "title": "Manual adjustment",
+      "description": "Credits and debits are posted as balanced ledger entries.",
+      "currency": "Currency",
+      "amount": "Signed amount in minor units",
+      "amountHelp": "Use a positive value to credit and a negative value to debit.",
+      "reason": "Mandatory reason",
+      "reasonHelp": "Describe the approved business reason and supporting evidence.",
+      "submit": "Post adjustment",
+      "success": "The audited adjustment was posted."
+    },
+    "freeze": {
+      "reason": "Mandatory freeze reason",
+      "frozen": "Wallet frozen",
+      "unfrozen": "Wallet unfrozen",
+      "freeze": "Freeze",
+      "unfreeze": "Unfreeze"
+    },
+    "errors": {
+      "invalid_adjustment": "Check the adjustment fields.",
+      "invalid_freeze": "Add a valid reason before changing wallet access.",
+      "wallet_insufficient_funds": "This debit would make the balance negative.",
+      "wallet_frozen": "This wallet is frozen.",
+      "wallet_idempotency_conflict": "That request key was already used for a different operation.",
+      "wallet_adjustment_reason_required": "A detailed reason is required.",
+      "operation_failed": "The operation could not be completed."
+    },
+    "empty": {
+      "title": "Select a customer",
+      "description": "Choose a customer to inspect balances and the immutable ledger."
+    },
+    "types": {
+      "topup": "Wallet top-up",
+      "top_up": "Wallet top-up",
+      "purchase": "Purchase",
+      "refund": "Refund",
+      "commission": "Commission",
+      "affiliate_commission": "Affiliate commission",
+      "cashback": "Cashback",
+      "bonus": "Bonus",
+      "admin_adjustment": "Admin adjustment",
+      "hold": "Funds held",
+      "release": "Funds released",
+      "payout": "Payout",
+      "fee": "Fee",
+      "chargeback": "Chargeback"
     }
   },
   "Catalog": {

@@ -4,6 +4,15 @@ import type {NextConfig} from 'next';
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ['pdfkit', '@embedpdf/fonts-arabic'],
+  outputFileTracingIncludes: {
+    '/*/account/wallet/statement.pdf': [
+      './node_modules/@embedpdf/fonts-arabic/fonts/NotoNaskhArabic-Regular.ttf'
+    ],
+    '/*/admin/wallets/statement.pdf': [
+      './node_modules/@embedpdf/fonts-arabic/fonts/NotoNaskhArabic-Regular.ttf'
+    ]
+  },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion']
   },

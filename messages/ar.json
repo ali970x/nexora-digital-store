@@ -94,12 +94,14 @@
     "quickActions": "إجراءات سريعة",
     "nav": {
       "overview": "نظرة عامة",
+      "wallet": "المحفظة",
       "profile": "الملف الشخصي",
       "security": "الأمان",
       "notifications": "الإشعارات",
       "preferences": "التفضيلات",
       "identity": "الهوية والوصول",
       "catalog": "الكتالوج",
+      "wallets": "المحافظ",
       "settings": "إعدادات المنصة"
     }
   },
@@ -742,6 +744,123 @@
       "store": "هيكل المتجر",
       "account": "هيكل الحساب",
       "admin": "هيكل الإدارة"
+    }
+  },
+  "Wallet": {
+    "metaTitle": "المحفظة",
+    "title": "محفظتك",
+    "description": "رصيد آمن واحد للمشتريات الفورية والاستردادات والمكافآت والمدفوعات.",
+    "protected": "محمية بقيد محاسبي مزدوج",
+    "available": "الرصيد المتاح",
+    "held": "المبلغ المحجوز",
+    "frozen": "مجمّدة",
+    "statement": {
+      "title": "كشف الحساب",
+      "description": "كل حركة مسجلة بشكل دائم ومتوازنة محاسبياً بصورة مستقلة."
+    },
+    "filters": {
+      "allCurrencies": "كل العملات",
+      "allTypes": "كل أنواع الحركات",
+      "from": "من",
+      "to": "إلى",
+      "apply": "تطبيق الفلاتر",
+      "clear": "مسح"
+    },
+    "export": {"csv": "تنزيل CSV", "pdf": "تنزيل PDF"},
+    "empty": {
+      "title": "لا توجد حركات بعد",
+      "description": "ستظهر هنا مشترياتك وعمليات الشحن والحجز والمكافآت."
+    },
+    "details": "عرض تفاصيل الحركة",
+    "pagination": {
+      "page": "الصفحة {page} من {pages}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "types": {
+      "topup": "شحن المحفظة",
+      "top_up": "شحن المحفظة",
+      "purchase": "شراء",
+      "refund": "استرداد",
+      "commission": "عمولة",
+      "affiliate_commission": "عمولة تسويق",
+      "cashback": "استرداد نقدي",
+      "bonus": "مكافأة",
+      "admin_adjustment": "تعديل إداري",
+      "hold": "حجز أموال",
+      "release": "تحرير أموال",
+      "payout": "دفعة مالية",
+      "fee": "رسوم",
+      "chargeback": "استرداد قسري"
+    },
+    "detail": {
+      "back": "العودة إلى المحفظة",
+      "status": "الحالة",
+      "reference": "المرجع",
+      "transactionId": "معرّف الحركة",
+      "copy": "نسخ",
+      "copied": "تم النسخ",
+      "reason": "السبب"
+    },
+    "status": {"posted": "مرحّلة", "reversed": "معكوسة"}
+  },
+  "WalletAdmin": {
+    "eyebrow": "الرقابة المالية",
+    "title": "عمليات المحافظ",
+    "description": "راجع السجلات غير القابلة للتعديل، وجمّد الوصول، وأنشئ تعديلات موثقة بالكامل.",
+    "search": "البحث عن العملاء",
+    "ledger": "سجل العميل",
+    "audited": "موثق بالكامل",
+    "frozen": "مجمّدة",
+    "held": "محجوز",
+    "recent": "أحدث قيود السجل",
+    "export": {"csv": "تصدير CSV", "pdf": "تصدير PDF"},
+    "adjustment": {
+      "title": "تعديل يدوي",
+      "description": "تُرحّل الإضافات والخصومات كقيود محاسبية متوازنة.",
+      "currency": "العملة",
+      "amount": "المبلغ الموقّع بالوحدة الصغرى",
+      "amountHelp": "استخدم قيمة موجبة للإضافة وسالبة للخصم.",
+      "reason": "السبب الإلزامي",
+      "reasonHelp": "اشرح سبب العمل المعتمد والمستندات المؤيدة.",
+      "submit": "ترحيل التعديل",
+      "success": "تم ترحيل التعديل الموثق."
+    },
+    "freeze": {
+      "reason": "سبب التجميد إلزامي",
+      "frozen": "تم تجميد المحفظة",
+      "unfrozen": "تم إلغاء تجميد المحفظة",
+      "freeze": "تجميد",
+      "unfreeze": "إلغاء التجميد"
+    },
+    "errors": {
+      "invalid_adjustment": "تحقق من حقول التعديل.",
+      "invalid_freeze": "أضف سبباً صالحاً قبل تغيير الوصول إلى المحفظة.",
+      "wallet_insufficient_funds": "سيجعل هذا الخصم الرصيد سالباً.",
+      "wallet_frozen": "هذه المحفظة مجمّدة.",
+      "wallet_idempotency_conflict": "استُخدم مفتاح الطلب نفسه سابقاً لعملية مختلفة.",
+      "wallet_adjustment_reason_required": "السبب المفصل إلزامي.",
+      "operation_failed": "تعذر إكمال العملية."
+    },
+    "empty": {
+      "title": "اختر عميلاً",
+      "description": "اختر عميلاً لمراجعة الأرصدة والسجل غير القابل للتعديل."
+    },
+    "types": {
+      "topup": "شحن المحفظة",
+      "top_up": "شحن المحفظة",
+      "purchase": "شراء",
+      "refund": "استرداد",
+      "commission": "عمولة",
+      "affiliate_commission": "عمولة تسويق",
+      "cashback": "استرداد نقدي",
+      "bonus": "مكافأة",
+      "admin_adjustment": "تعديل إداري",
+      "hold": "حجز أموال",
+      "release": "تحرير أموال",
+      "payout": "دفعة مالية",
+      "fee": "رسوم",
+      "chargeback": "استرداد قسري"
     }
   },
   "Catalog": {

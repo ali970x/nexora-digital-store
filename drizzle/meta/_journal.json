@@ -57,6 +57,41 @@
       "when": 1786359600000,
       "tag": "0007_catalog_typo_tolerance",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1786442400000,
+      "tag": "0008_wallet_enum_expansion",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1786444200000,
+      "tag": "0009_wallet_ledger",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1786446000000,
+      "tag": "0010_wallet_hardening",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1786447800000,
+      "tag": "0011_wallet_api_surface",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1786449600000,
+      "tag": "0012_wallet_safe_integer",
+      "breakpoints": true
     }
   ]
 }

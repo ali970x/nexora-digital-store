@@ -28,6 +28,7 @@ import {cn} from '@/lib/utils';
 
 const accountItems = [
   {key: 'overview', href: '/account', icon: LayoutDashboard},
+  {key: 'wallet', href: '/account/wallet', icon: WalletCards},
   {key: 'profile', href: '/account/profile', icon: UserRound},
   {key: 'security', href: '/account/security', icon: KeyRound},
   {key: 'notifications', href: '/account/notifications', icon: Bell},
@@ -36,6 +37,7 @@ const accountItems = [
 
 const adminItems = [
   {key: 'overview', href: '/admin', icon: LayoutDashboard},
+  {key: 'wallets', href: '/admin/wallets', icon: WalletCards},
   {key: 'catalog', href: '/admin/catalog', icon: PackageSearch},
   {key: 'identity', href: '/admin/identity', icon: Users},
   {key: 'settings', href: '/admin/settings', icon: Settings},

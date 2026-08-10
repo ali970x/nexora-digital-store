@@ -9,6 +9,29 @@ export type FulfillmentMode = 'auto' | 'manual' | 'auto_then_manual';
 export type CatalogMediaKind = 'image' | 'video' | 'logo';
 export type QuoteRequestStatus =
   'submitted' | 'reviewing' | 'quoted' | 'accepted' | 'declined' | 'cancelled';
+export type WalletAccountType =
+  | 'customer'
+  | 'platform_cash'
+  | 'platform_revenue'
+  | 'platform_liability'
+  | 'supplier'
+  | 'affiliate'
+  | 'customer_hold';
+export type WalletTransactionType =
+  | 'top_up'
+  | 'purchase'
+  | 'refund'
+  | 'admin_adjustment'
+  | 'affiliate_commission'
+  | 'cashback'
+  | 'hold'
+  | 'release'
+  | 'topup'
+  | 'commission'
+  | 'bonus'
+  | 'payout'
+  | 'fee'
+  | 'chargeback';
 
 type ProfileRow = {
   id: string;
@@ -102,6 +125,73 @@ type UserSessionRow = {
   country_code: string | null;
   last_seen_at: string;
   revoked_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type WalletRow = {
+  id: string;
+  owner_id: string | null;
+  account_type: WalletAccountType;
+  currency_code: string;
+  cached_balance: number;
+  locked: boolean;
+  label: string | null;
+  frozen_at: string | null;
+  frozen_by: string | null;
+  freeze_reason: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type WalletTransactionRow = {
+  id: string;
+  debit_wallet_id: string;
+  credit_wallet_id: string;
+  type: WalletTransactionType;
+  status: 'posted' | 'reversed';
+  amount: number;
+  currency_code: string;
+  idempotency_scope: string;
+  idempotency_key: string;
+  reference_type: string;
+  reference_id: string | null;
+  reason: string | null;
+  metadata: Json;
+  reversal_of_id: string | null;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type WalletReconciliationRow = {
+  id: string;
+  wallet_id: string;
+  derived_balance: number;
+  cached_balance: number;
+  difference: number;
+  status: 'matched' | 'mismatch';
+  checked_at: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AdminAlertRow = {
+  id: string;
+  severity: 'info' | 'warning' | 'critical';
+  alert_type: string;
+  title: Json;
+  message: Json;
+  resource_type: string;
+  resource_id: string | null;
+  fingerprint: string;
+  status: 'open' | 'acknowledged' | 'resolved';
+  metadata: Json;
+  acknowledged_at: string | null;
+  acknowledged_by: string | null;
+  resolved_at: string | null;
+  resolved_by: string | null;
+  resolution_note: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -296,6 +386,44 @@ export type Database = {
         UserSessionRow,
         Partial<UserSessionRow> & {id: string; profile_id: string}
       >;
+      wallets: TableDefinition<
+        WalletRow,
+        Partial<WalletRow> & {account_type: WalletAccountType; currency_code: string}
+      >;
+      wallet_transactions: TableDefinition<
+        WalletTransactionRow,
+        Partial<WalletTransactionRow> & {
+          debit_wallet_id: string;
+          credit_wallet_id: string;
+          type: WalletTransactionType;
+          amount: number;
+          currency_code: string;
+          idempotency_scope: string;
+          idempotency_key: string;
+          reference_type: string;
+        }
+      >;
+      wallet_reconciliations: TableDefinition<
+        WalletReconciliationRow,
+        Partial<WalletReconciliationRow> & {
+          wallet_id: string;
+          derived_balance: number;
+          cached_balance: number;
+          difference: number;
+          status: 'matched' | 'mismatch';
+        }
+      >;
+      admin_alerts: TableDefinition<
+        AdminAlertRow,
+        Partial<AdminAlertRow> & {
+          severity: 'info' | 'warning' | 'critical';
+          alert_type: string;
+          title: Json;
+          message: Json;
+          resource_type: string;
+          fingerprint: string;
+        }
+      >;
       product_types: TableDefinition<
         ProductTypeRow,
         Partial<ProductTypeRow> & {code: string; name: Json}
@@ -454,6 +582,73 @@ export type Database = {
         };
         Returns: CatalogSearchRow[];
       };
+      wallet_credit: {
+        Args: {
+          p_owner_id: string;
+          p_currency_code: string;
+          p_amount: number;
+          p_type: WalletTransactionType;
+          p_idempotency_key: string;
+          p_reference_type: string;
+          p_reference_id?: string | null;
+          p_reason?: string | null;
+          p_metadata?: Json;
+        };
+        Returns: WalletTransactionRow;
+      };
+      wallet_debit: {
+        Args: {
+          p_owner_id: string;
+          p_currency_code: string;
+          p_amount: number;
+          p_type: WalletTransactionType;
+          p_idempotency_key: string;
+          p_reference_type: string;
+          p_reference_id?: string | null;
+          p_reason?: string | null;
+          p_metadata?: Json;
+        };
+        Returns: WalletTransactionRow;
+      };
+      wallet_hold: {
+        Args: {
+          p_owner_id: string;
+          p_currency_code: string;
+          p_amount: number;
+          p_idempotency_key: string;
+          p_reference_type: string;
+          p_reference_id?: string | null;
+          p_metadata?: Json;
+        };
+        Returns: WalletTransactionRow;
+      };
+      wallet_release: {
+        Args: {
+          p_owner_id: string;
+          p_currency_code: string;
+          p_amount: number;
+          p_idempotency_key: string;
+          p_reference_type: string;
+          p_reference_id?: string | null;
+          p_metadata?: Json;
+        };
+        Returns: WalletTransactionRow;
+      };
+      wallet_admin_adjust: {
+        Args: {
+          p_owner_id: string;
+          p_currency_code: string;
+          p_signed_amount: number;
+          p_idempotency_key: string;
+          p_reason: string;
+        };
+        Returns: WalletTransactionRow;
+      };
+      wallet_set_frozen: {
+        Args: {p_wallet_id: string; p_frozen: boolean; p_reason: string; p_request_id: string};
+        Returns: WalletRow;
+      };
+      run_wallet_reconciliation: {Args: Record<never, never>; Returns: number};
     };
     Enums: {
       user_role: UserRole;
@@ -463,6 +658,9 @@ export type Database = {
       fulfillment_mode: FulfillmentMode;
       catalog_media_kind: CatalogMediaKind;
       quote_request_status: QuoteRequestStatus;
+      wallet_account_type: WalletAccountType;
+      wallet_transaction_type: WalletTransactionType;
+      wallet_transaction_status: 'posted' | 'reversed';
     };
     CompositeTypes: Record<never, never>;
   };

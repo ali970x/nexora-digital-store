@@ -13,7 +13,7 @@ export default async function AdminLayout({
   params: Promise<{locale: string}>;
 }) {
   const {locale} = await params;
-  const context = await requireRole(locale, ['admin', 'owner']);
+  const context = await requireRole(locale, ['finance', 'admin', 'owner']);
   const userName = context.user.email?.split('@')[0] ?? context.user.id.slice(0, 8);
   return <AdminShell userName={userName}>{children}</AdminShell>;
 }

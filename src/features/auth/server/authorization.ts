@@ -54,6 +54,7 @@ const permissionMap: Record<Permission, true> = {
   'settings.manage': true,
   'catalog.manage': true,
   'catalog.read_draft': true,
+  'wallet.manage': true,
   'platform.own': true
 };
 

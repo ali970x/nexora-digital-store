@@ -4604,6 +4604,390 @@ html[lang='ar'] .section-kicker {
   }
 }
 
+/* Wallet and financial operations */
+.wallet-page,
+.wallet-detail-page,
+.admin-wallet-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+.wallet-page-heading,
+.wallet-section-heading,
+.admin-wallet-owner-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+.wallet-integrity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: none;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in oklab, var(--success), transparent 65%);
+  border-radius: var(--radius-full);
+  background: color-mix(in oklab, var(--success), transparent 90%);
+  color: var(--success);
+  font-size: var(--type-small);
+  font-weight: 700;
+}
+.wallet-integrity-chip svg,
+.wallet-transaction-icon svg,
+.wallet-detail-icon svg {
+  inline-size: var(--space-5);
+}
+.wallet-balance-grid,
+.admin-wallet-balances {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--space-64)), 1fr));
+  gap: var(--space-4);
+}
+.wallet-balance-card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-block-size: var(--space-48);
+  flex-direction: column;
+  gap: var(--space-3);
+  overflow: hidden;
+  padding: var(--space-6);
+  background: var(--gradient-surface);
+}
+.wallet-balance-card::after {
+  position: absolute;
+  z-index: -1;
+  inset-inline-end: calc(var(--space-12) * -1);
+  inset-block-start: calc(var(--space-12) * -1);
+  inline-size: var(--space-40);
+  block-size: var(--space-40);
+  border-radius: var(--radius-full);
+  background: color-mix(in oklab, var(--accent), transparent 82%);
+  filter: blur(var(--blur-lg));
+  content: '';
+}
+.wallet-balance-card-head,
+.wallet-balance-card-head > span,
+.wallet-held-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.wallet-balance-card-head > span {
+  justify-content: flex-start;
+  font-weight: 750;
+  letter-spacing: var(--tracking-wide);
+}
+.wallet-balance-card > small,
+.wallet-held-row,
+.wallet-section-heading p,
+.admin-wallet-owner-heading p {
+  color: var(--text-muted);
+}
+.wallet-balance-card > strong {
+  font-size: var(--type-h3);
+  font-variant-numeric: tabular-nums;
+}
+.wallet-held-row {
+  margin-block-start: auto;
+  padding-block-start: var(--space-3);
+  border-block-start: 1px solid var(--border-subtle);
+  font-size: var(--type-small);
+}
+.wallet-statement-section,
+.admin-wallet-workspace {
+  padding: var(--space-6);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.wallet-export-actions,
+.wallet-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-3);
+}
+.wallet-filters {
+  margin-block: var(--space-6);
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  background: var(--surface-raised);
+}
+.wallet-filters label,
+.admin-adjustment-card label {
+  display: flex;
+  min-inline-size: var(--space-40);
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--type-small);
+  font-weight: 650;
+}
+.wallet-filters select,
+.wallet-filters input,
+.admin-wallet-search,
+.admin-wallet-search input,
+.admin-adjustment-card select,
+.wallet-freeze-control input {
+  min-block-size: var(--control-md);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--text);
+}
+.wallet-filters select,
+.wallet-filters input,
+.admin-adjustment-card select,
+.wallet-freeze-control input {
+  padding-inline: var(--space-3);
+}
+.wallet-transaction-list,
+.admin-ledger-preview {
+  display: flex;
+  flex-direction: column;
+}
+.wallet-transaction-row,
+.admin-ledger-preview > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1.5fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  border-block-end: 1px solid var(--border-subtle);
+}
+.wallet-transaction-row {
+  border-radius: var(--radius-lg);
+  color: inherit;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+.wallet-transaction-row:hover {
+  background: var(--surface-hover);
+}
+.wallet-transaction-icon,
+.wallet-detail-icon {
+  display: grid;
+  inline-size: var(--space-10);
+  block-size: var(--space-10);
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: color-mix(in oklab, var(--danger), transparent 88%);
+  color: var(--danger);
+}
+.wallet-transaction-icon[data-direction='credit'],
+.wallet-detail-icon[data-direction='credit'] {
+  background: color-mix(in oklab, var(--success), transparent 88%);
+  color: var(--success);
+}
+.wallet-transaction-copy,
+.wallet-transaction-reference,
+.admin-ledger-preview span {
+  display: flex;
+  min-inline-size: 0;
+  flex-direction: column;
+}
+.wallet-transaction-copy small,
+.wallet-transaction-reference small,
+.admin-ledger-preview small {
+  overflow: hidden;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wallet-transaction-amount,
+.admin-ledger-preview b {
+  color: var(--danger);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+.wallet-transaction-amount[data-direction='credit'],
+.admin-ledger-preview b[data-direction='credit'] {
+  color: var(--success);
+}
+.wallet-back-link {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--space-2);
+  color: var(--text-muted);
+}
+.wallet-transaction-detail-card {
+  display: flex;
+  max-inline-size: calc(var(--space-64) * 2);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  text-align: center;
+}
+.wallet-transaction-detail-card h1 {
+  font-size: var(--type-h2);
+  font-variant-numeric: tabular-nums;
+}
+.wallet-detail-grid {
+  display: grid;
+  inline-size: 100%;
+  gap: var(--space-3);
+  margin-block-start: var(--space-4);
+  text-align: start;
+}
+.wallet-detail-grid > div {
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+}
+.wallet-detail-grid dt {
+  color: var(--text-muted);
+  font-size: var(--type-small);
+}
+.wallet-detail-grid dd {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+  overflow-wrap: anywhere;
+}
+.admin-wallet-layout {
+  display: grid;
+  grid-template-columns: minmax(var(--space-56), 0.3fr) minmax(0, 1fr);
+  gap: var(--space-5);
+}
+.admin-wallet-owners {
+  display: flex;
+  max-block-size: calc(var(--space-64) * 3);
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow-y: auto;
+  padding: var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--surface);
+}
+.admin-wallet-search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--space-3);
+}
+.admin-wallet-search input {
+  min-inline-size: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+}
+.admin-wallet-owners > a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+}
+.admin-wallet-owners > a[data-active] {
+  background: color-mix(in oklab, var(--accent), transparent 88%);
+  color: var(--text);
+}
+.admin-wallet-owners > a > span:first-child {
+  display: grid;
+  inline-size: var(--space-10);
+  block-size: var(--space-10);
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: var(--surface-raised);
+}
+.admin-wallet-owners > a > span:last-child {
+  display: flex;
+  min-inline-size: 0;
+  flex-direction: column;
+}
+.admin-wallet-owners small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-wallet-workspace,
+.admin-wallet-balances .ui-card,
+.admin-adjustment-card,
+.admin-adjustment-card > div,
+.wallet-freeze-control {
+  display: flex;
+}
+.admin-wallet-workspace,
+.admin-adjustment-card {
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.admin-wallet-balances .ui-card {
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.admin-wallet-balances .ui-card > div,
+.wallet-freeze-control,
+.admin-adjustment-card > div {
+  align-items: center;
+  gap: var(--space-3);
+}
+.wallet-freeze-control {
+  flex-wrap: wrap;
+}
+.wallet-freeze-control input {
+  min-inline-size: 0;
+  flex: 1;
+}
+.admin-adjustment-card form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.admin-adjustment-card form .ui-button {
+  align-self: end;
+}
+.admin-ledger-preview h3 {
+  margin-block-end: var(--space-3);
+}
+
+@media (max-width: 64rem) {
+  .admin-wallet-layout {
+    grid-template-columns: 1fr;
+  }
+  .admin-wallet-owners {
+    max-block-size: var(--space-64);
+  }
+}
+@media (max-width: 40rem) {
+  .wallet-page-heading,
+  .wallet-section-heading,
+  .admin-wallet-owner-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .wallet-statement-section,
+  .admin-wallet-workspace,
+  .wallet-transaction-detail-card {
+    padding: var(--space-4);
+  }
+  .wallet-export-actions,
+  .wallet-export-actions .ui-button,
+  .wallet-filters,
+  .wallet-filters label {
+    inline-size: 100%;
+  }
+  .wallet-transaction-row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .wallet-transaction-reference {
+    display: none;
+  }
+  .admin-adjustment-card form {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Identity and account */
 .auth-shell {
   position: relative;

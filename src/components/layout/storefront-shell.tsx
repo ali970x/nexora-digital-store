@@ -129,7 +129,7 @@ function StorefrontHeader() {
             <Link className="store-nav-link" href="/#how-it-works">
               {t('howItWorks')}
             </Link>
-            <Link className="store-nav-link" href="/#wallet">
+            <Link className="store-nav-link" href="/account/wallet">
               {t('wallet')}
             </Link>
           </nav>
@@ -144,13 +144,13 @@ function StorefrontHeader() {
               <span>{t('search')}</span>
               <kbd>⌘K</kbd>
             </Button>
-            <span className="wallet-chip">
+            <Link href="/account/wallet" className="wallet-chip">
               <WalletCards aria-hidden="true" />
               <span>
                 <small>{t('balance')}</small>
                 <strong>$83.00</strong>
               </span>
-            </span>
+            </Link>
             <CurrencySwitcher compact />
             <LocaleSwitcher />
             <ThemeSwitcher />
@@ -313,12 +313,12 @@ function MobileTabBar() {
         <PackageSearch />
         <span>{t('products')}</span>
       </Link>
-      <a href="#wallet" className="mobile-wallet-action">
+      <Link href="/account/wallet" className="mobile-wallet-action">
         <span>
           <WalletCards />
         </span>
         <small>{t('wallet')}</small>
-      </a>
+      </Link>
       <a href="#featured">
         <ShoppingBag />
         <span>{t('orders')}</span>

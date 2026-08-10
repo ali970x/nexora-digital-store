@@ -232,9 +232,15 @@ Columns: `owner_id -> profiles null`, `account_type wallet_account_type`, `curre
 
 ### `wallet_transactions` [core, append-only]
 
-Columns: `debit_wallet_id -> wallets`, `credit_wallet_id -> wallets`, `type wallet_transaction_type`, `status wallet_transaction_status`, `amount bigint`, `currency_code -> currencies`, `idempotency_key text`, `reference_type text`, `reference_id uuid`, `reason text`, `metadata jsonb`, `reversal_of_id -> wallet_transactions`, `created_by -> profiles null`. Unique idempotency key; unique nonnull reversal target; debit/created, credit/created, reference indexes. Checks positive amount, different accounts, matching account currencies in function, adjustment requires reason, reversal points to posted non-reversal. UPDATE/DELETE forbidden. RLS user reads transfers touching own wallet; finance reads; inserts only restricted `post_wallet_transaction` function.
+Columns: `debit_wallet_id -> wallets`, `credit_wallet_id -> wallets`, `type wallet_transaction_type`, `status wallet_transaction_status`, `amount bigint`, `currency_code -> currencies`, `idempotency_scope text`, `idempotency_key text`, `reference_type text`, `reference_id uuid`, `reason text`, `metadata jsonb`, `reversal_of_id -> wallet_transactions`, `created_by -> profiles null`. Unique `(idempotency_scope,idempotency_key)`; unique nonnull reversal target; debit/created, credit/created, currency, creator, and reference indexes. Checks positive amount, different accounts, matching currencies, and a mandatory reason for admin adjustments. UPDATE/DELETE is blocked by trigger for every role. RLS lets customers read transfers touching their wallets and finance read authorized ledgers; direct writes are revoked.
 
 ### `wallet_reconciliations` [core, append-only]
+
+Columns: `wallet_id -> wallets`, `cached_balance bigint`, `derived_balance bigint`, `difference bigint`, `status text`, `checked_at timestamptz`, plus standard identifiers/timestamps. Each nightly run records the comparison; UPDATE/DELETE is blocked. Finance-only RLS.
+
+### `admin_alerts`
+
+Columns: localized `title/description jsonb`, `severity`, `category`, `status`, deduplication `fingerprint`, `resource_type`, `resource_id`, `metadata`, acknowledgement/resolution actors and timestamps, plus standard identifiers/timestamps. An open-fingerprint unique index prevents reconciliation alert storms. Finance-only RLS for wallet alerts.
 
 Columns: `wallet_id -> wallets`, `derived_balance bigint`, `cached_balance bigint`, `difference bigint`, `checked_at timestamptz`, `status text`, `alert_reference text`, `resolved_at`, `resolved_by -> profiles`, `resolution_note`. Unique wallet/checked; mismatch/status index; difference = cached-derived. Service inserts; finance reads/resolves via function. Mismatch emits P0 outbox event.
 

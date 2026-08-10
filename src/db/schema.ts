@@ -28,7 +28,8 @@ export const accountType = pgEnum('wallet_account_type', [
   'platform_revenue',
   'platform_liability',
   'supplier',
-  'affiliate'
+  'affiliate',
+  'customer_hold'
 ]);
 export const walletTransactionType = pgEnum('wallet_transaction_type', [
   'top_up',
@@ -38,7 +39,13 @@ export const walletTransactionType = pgEnum('wallet_transaction_type', [
   'affiliate_commission',
   'cashback',
   'hold',
-  'release'
+  'release',
+  'topup',
+  'commission',
+  'bonus',
+  'payout',
+  'fee',
+  'chargeback'
 ]);
 export const transactionStatus = pgEnum('wallet_transaction_status', ['posted', 'reversed']);
 export const userRole = pgEnum('user_role', [
@@ -252,14 +259,35 @@ export const wallets = pgTable(
     cachedBalance: bigint('cached_balance', {mode: 'number'}).notNull().default(0),
     locked: boolean('locked').notNull().default(false),
     label: text('label'),
+    frozenAt: timestamp('frozen_at', {withTimezone: true, mode: 'date'}),
+    frozenBy: uuid('frozen_by').references(() => profiles.id, {onDelete: 'set null'}),
+    freezeReason: text('freeze_reason'),
     ...timestamps
   },
   (table) => [
-    uniqueIndex('wallets_owner_currency_uidx').on(table.ownerId, table.currencyCode),
+    uniqueIndex('wallets_owner_currency_type_uidx')
+      .on(table.ownerId, table.currencyCode, table.accountType)
+      .where(sql`${table.ownerId} is not null`),
+    uniqueIndex('wallets_system_currency_label_uidx')
+      .on(table.accountType, table.currencyCode, table.label)
+      .where(sql`${table.ownerId} is null`),
+    index('wallets_owner_currency_idx').on(table.ownerId, table.currencyCode, table.accountType),
     index('wallets_account_type_idx').on(table.accountType),
+    index('wallets_frozen_idx').on(table.locked, table.updatedAt),
+    index('wallets_frozen_by_idx').on(table.frozenBy),
     check(
       'wallets_owner_ck',
-      sql`${table.ownerId} is not null or ${table.accountType} <> 'customer'`
+      sql`(${table.accountType} in ('customer', 'customer_hold') and ${table.ownerId} is not null)
+        or ${table.accountType} not in ('customer', 'customer_hold')`
+    ),
+    check(
+      'wallets_customer_nonnegative_ck',
+      sql`${table.accountType} not in ('customer', 'customer_hold', 'supplier', 'affiliate')
+        or ${table.cachedBalance} >= 0`
+    ),
+    check(
+      'wallets_cached_balance_safe_integer_ck',
+      sql`${table.cachedBalance} between -9007199254740991 and 9007199254740991`
     )
   ]
 );
@@ -278,6 +306,7 @@ export const walletTransactions = pgTable(
     status: transactionStatus('status').notNull().default('posted'),
     amount: bigint('amount', {mode: 'number'}).notNull(),
     currencyCode: text('currency_code').notNull(),
+    idempotencyScope: text('idempotency_scope').notNull().default('wallet.legacy'),
     idempotencyKey: text('idempotency_key').notNull(),
     referenceType: text('reference_type').notNull(),
     referenceId: uuid('reference_id'),
@@ -288,12 +317,16 @@ export const walletTransactions = pgTable(
     ...timestamps
   },
   (table) => [
-    uniqueIndex('wallet_transactions_idempotency_uidx').on(table.idempotencyKey),
+    uniqueIndex('wallet_transactions_idempotency_scope_key_uidx').on(
+      table.idempotencyScope,
+      table.idempotencyKey
+    ),
     uniqueIndex('wallet_transactions_reversal_uidx').on(table.reversalOfId),
     index('wallet_transactions_debit_created_idx').on(table.debitWalletId, table.createdAt),
     index('wallet_transactions_credit_created_idx').on(table.creditWalletId, table.createdAt),
     index('wallet_transactions_reference_idx').on(table.referenceType, table.referenceId),
     check('wallet_transactions_amount_ck', sql`${table.amount} > 0`),
+    check('wallet_transactions_safe_integer_ck', sql`${table.amount} <= 9007199254740991`),
     check(
       'wallet_transactions_distinct_accounts_ck',
       sql`${table.debitWalletId} <> ${table.creditWalletId}`
@@ -346,6 +379,64 @@ export const auditLogs = pgTable(
   (table) => [
     index('audit_logs_resource_idx').on(table.resourceType, table.resourceId, table.createdAt),
     index('audit_logs_actor_idx').on(table.actorId, table.createdAt)
+  ]
+);
+
+export const walletReconciliations = pgTable(
+  'wallet_reconciliations',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    walletId: uuid('wallet_id')
+      .notNull()
+      .references(() => wallets.id, {onDelete: 'restrict'}),
+    derivedBalance: bigint('derived_balance', {mode: 'number'}).notNull(),
+    cachedBalance: bigint('cached_balance', {mode: 'number'}).notNull(),
+    difference: bigint('difference', {mode: 'number'}).notNull(),
+    status: text('status').notNull(),
+    checkedAt: timestamp('checked_at', {withTimezone: true, mode: 'date'}).notNull().defaultNow(),
+    ...timestamps
+  },
+  (table) => [
+    index('wallet_reconciliations_wallet_checked_idx').on(table.walletId, table.checkedAt),
+    index('wallet_reconciliations_mismatch_idx').on(table.checkedAt),
+    check(
+      'wallet_reconciliations_difference_ck',
+      sql`${table.difference} = ${table.cachedBalance} - ${table.derivedBalance}`
+    ),
+    check('wallet_reconciliations_status_ck', sql`${table.status} in ('matched', 'mismatch')`)
+  ]
+);
+
+export const adminAlerts = pgTable(
+  'admin_alerts',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    severity: text('severity').notNull(),
+    alertType: text('alert_type').notNull(),
+    title: jsonb('title').$type<Record<string, string>>().notNull(),
+    message: jsonb('message').$type<Record<string, string>>().notNull(),
+    resourceType: text('resource_type').notNull(),
+    resourceId: uuid('resource_id'),
+    fingerprint: text('fingerprint').notNull(),
+    status: text('status').notNull().default('open'),
+    metadata: jsonb('metadata').$type<Record<string, unknown>>().notNull().default({}),
+    acknowledgedAt: timestamp('acknowledged_at', {withTimezone: true, mode: 'date'}),
+    acknowledgedBy: uuid('acknowledged_by').references(() => profiles.id, {
+      onDelete: 'set null'
+    }),
+    resolvedAt: timestamp('resolved_at', {withTimezone: true, mode: 'date'}),
+    resolvedBy: uuid('resolved_by').references(() => profiles.id, {onDelete: 'set null'}),
+    resolutionNote: text('resolution_note'),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('admin_alerts_open_fingerprint_uidx')
+      .on(table.fingerprint)
+      .where(sql`${table.status} <> 'resolved'`),
+    index('admin_alerts_status_created_idx').on(table.status, table.createdAt),
+    index('admin_alerts_resource_idx').on(table.resourceType, table.resourceId, table.createdAt),
+    index('admin_alerts_acknowledged_by_idx').on(table.acknowledgedBy),
+    index('admin_alerts_resolved_by_idx').on(table.resolvedBy)
   ]
 );
 

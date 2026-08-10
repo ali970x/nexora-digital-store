@@ -60,40 +60,38 @@ Each phase is a production-capable vertical increment. A phase is accepted only 
 - Product/category metadata, hreflang and structured data validate for ar/en.
 - Import is idempotent, reports row-level errors, and all admin changes appear in the audit log.
 
-## Phase 3 — Pricing, FX, promotions, cart, and tax
+## Phase 3 — Wallet ledger and financial controls (complete)
 
 ### Deliverables
 
-- Integer-money pricing engine: cost/margin, tier/country rules, dynamic rules, bulk discounts, flash sales, first-order offers.
-- USD-base exchange rate refresh, manual override, history, rounding rules, stale-rate alerts.
-- Coupon engine with percent/fixed/free-item, scope, limits, stacking, reservation and redemption.
-- Guest/auth saved carts, cart merge, add-ons/bundles, upsells, notes, one-click reorder, abandoned cart state.
-- Country tax/VAT rules and immutable quote snapshots.
+- Append-only double-entry ledger, multi-currency available/held sub-balances, immutable entries, and trigger-only balance cache.
+- Locked credit, debit, hold, and release functions with negative-balance prevention and exact idempotency replay.
+- Nightly derived-balance reconciliation, critical admin alerts, wallet freeze, and audited reasoned adjustments.
+- Localized user wallet, filterable transaction detail/statement, and Arabic-capable CSV/PDF exports.
+- Finance wallet workspace with customer lookup, ledger export, freeze/unfreeze, and signed adjustments.
 
 ### Acceptance criteria
 
-- Property tests prove no persisted monetary amount is fractional or floating point.
-- Same valid pricing input and rate snapshot always produces the same quote.
-- Coupon concurrency cannot exceed total/per-user limits; expired reservations release.
-- Cart totals match checkout totals or checkout explicitly returns a refreshed quote.
-- FX override precedence, staleness, and every configured currency rounding case are tested.
+- Concurrent debits cannot overdraw or lose an update; a disposable test fires 100 parallel debits.
+- Duplicate idempotency keys return the original transaction and conflicting payloads fail.
+- Direct ledger UPDATE/DELETE and cached-balance mutation fail at database level.
+- Cached and fully derived balances reconcile with zero drift; mismatches create critical alerts.
+- User and finance routes are role protected, localized, responsive, and export valid Arabic statements.
 
-## Phase 4 — Wallet and payment rails
+## Phase 4 — Pricing, checkout preparation, and payment rails
 
 ### Deliverables
 
-- Production double-entry wallet: system accounts, holds/releases, top-ups, purchases, refunds, commissions, cashback, reasoned adjustments.
+- Integer-money pricing, FX, promotions, coupons, cart quote snapshots, and country tax/VAT rules.
 - Whish, OMT, bank/cash proof flows; Stripe Payment Intents/3DS adapter; NOWPayments crypto chains/confirmations; local-card adapter seam.
 - Private proof upload, OCR-assist queue, finance verification workspace, signed webhook ingress and replay defense.
-- Animated wallet card/balance, top-up experience, ledger statement and localized receipt.
-- Nightly reconciliation, mismatch P0 alerts, limits and idempotency instrumentation.
+- Wallet top-up experience, proof review, localized receipts, provider limits, and payment status tracking.
 
 ### Acceptance criteria
 
-- Concurrent debits never produce a negative customer balance.
-- Duplicate client requests and webhook deliveries produce one business result.
-- `wallet_transactions` rejects UPDATE/DELETE for every database role; reversal is compensating-only.
-- Cached and derived balances reconcile across randomized ledger tests.
+- Quotes are deterministic from integer inputs and an immutable rate/rule snapshot.
+- Coupon and payment concurrency cannot exceed usage limits or create duplicate business results.
+- Cart totals match checkout totals or checkout explicitly returns a refreshed quote.
 - Each payment adapter passes a shared initiate/verify/webhook/refund/status contract suite.
 
 ## Phase 5 — Checkout, orders, invoices, and realtime tracking
