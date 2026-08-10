@@ -4,6 +4,7 @@ import {NextResponse, type NextRequest} from 'next/server';
 
 import {routing} from './i18n/routing';
 import {resolveLocalePreference} from './i18n/locale-detection';
+import {requiresMfaChallenge} from './features/auth/server/mfa';
 import type {Database, UserRole} from './lib/supabase/database.types';
 
 const handleIntl = createIntlMiddleware(routing);
@@ -67,6 +68,11 @@ export default async function middleware(request: NextRequest) {
     const signIn = new URL(`/${locale}/auth/sign-in`, request.url);
     signIn.searchParams.set('returnTo', request.nextUrl.pathname);
     return NextResponse.redirect(signIn);
+  }
+
+  const {data: assurance} = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (requiresMfaChallenge(assurance)) {
+    return NextResponse.redirect(new URL(`/${locale}/auth/mfa`, request.url));
   }
 
   if (pathname.startsWith('/admin') || pathname.startsWith('/reseller')) {
