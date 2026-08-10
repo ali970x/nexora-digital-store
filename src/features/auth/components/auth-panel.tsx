@@ -147,10 +147,12 @@ export function AuthPanel({mode, factorId}: {mode: AuthMode; factorId?: string})
               <Mail aria-hidden="true" />
               {t('magicLink')}
             </TabsTrigger>
-            <TabsTrigger value="phone">
-              <Phone aria-hidden="true" />
-              {t('phoneOtp')}
-            </TabsTrigger>
+            {publicEnvironment.NEXT_PUBLIC_PHONE_OTP_ENABLED ? (
+              <TabsTrigger value="phone">
+                <Phone aria-hidden="true" />
+                {t('phoneOtp')}
+              </TabsTrigger>
+            ) : null}
           </TabsList>
         </Tabs>
       ) : null}
