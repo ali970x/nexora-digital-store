@@ -15,6 +15,20 @@
       "when": 1785888000000,
       "tag": "0001_identity_access",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1785892800000,
+      "tag": "0002_security_hardening",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1785893400000,
+      "tag": "0003_idempotency_policy",
+      "breakpoints": true
     }
   ]
 }

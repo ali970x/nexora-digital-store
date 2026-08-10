@@ -1,6 +1,7 @@
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-CREATE EXTENSION IF NOT EXISTS "citext";
-CREATE EXTENSION IF NOT EXISTS "vector";
+CREATE SCHEMA IF NOT EXISTS "extensions";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto" WITH SCHEMA "extensions";
+CREATE EXTENSION IF NOT EXISTS "citext" WITH SCHEMA "extensions";
+CREATE EXTENSION IF NOT EXISTS "vector" WITH SCHEMA "extensions";
 
 CREATE TYPE "wallet_account_type" AS ENUM ('customer', 'platform_cash', 'platform_revenue', 'platform_liability', 'supplier', 'affiliate');
 CREATE TYPE "wallet_transaction_type" AS ENUM ('top_up', 'purchase', 'refund', 'admin_adjustment', 'affiliate_commission', 'cashback', 'hold', 'release');
@@ -111,7 +112,7 @@ BEGIN
   UPDATE wallets SET cached_balance = cached_balance + p_amount, updated_at = now() WHERE id = p_credit_wallet_id;
   RETURN posted;
 END; $$;
-REVOKE ALL ON FUNCTION post_wallet_transaction(uuid, uuid, wallet_transaction_type, bigint, text, text, text, uuid, text, uuid, jsonb) FROM PUBLIC;
+REVOKE ALL ON FUNCTION post_wallet_transaction(uuid, uuid, wallet_transaction_type, bigint, text, text, text, uuid, text, uuid, jsonb) FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION post_wallet_transaction(uuid, uuid, wallet_transaction_type, bigint, text, text, text, uuid, text, uuid, jsonb) TO service_role;
 
 ALTER TABLE locales ENABLE ROW LEVEL SECURITY; ALTER TABLE currencies ENABLE ROW LEVEL SECURITY;

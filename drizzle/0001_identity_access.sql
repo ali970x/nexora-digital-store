@@ -118,7 +118,7 @@ RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS
       AND (expires_at IS NULL OR expires_at > now())
   );
 $$;
-REVOKE ALL ON FUNCTION app_has_role(user_role) FROM PUBLIC;
+REVOKE ALL ON FUNCTION app_has_role(user_role) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION app_has_role(user_role) TO authenticated, service_role;
 
 CREATE OR REPLACE FUNCTION app_can(required_permission text)
@@ -132,7 +132,7 @@ RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS
       AND (pr.expires_at IS NULL OR pr.expires_at > now())
   );
 $$;
-REVOKE ALL ON FUNCTION app_can(text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION app_can(text) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION app_can(text) TO authenticated, service_role;
 
 CREATE OR REPLACE FUNCTION handle_new_auth_user()
@@ -175,6 +175,7 @@ BEGIN
   RETURN NEW;
 END;
 $$;
+REVOKE ALL ON FUNCTION handle_new_auth_user() FROM PUBLIC, anon, authenticated, service_role;
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION handle_new_auth_user();
@@ -200,7 +201,7 @@ BEGIN
   RETURN touched;
 END;
 $$;
-REVOKE ALL ON FUNCTION touch_user_session(text, text, text, text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION touch_user_session(text, text, text, text) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION touch_user_session(text, text, text, text) TO authenticated;
 
 CREATE OR REPLACE FUNCTION revoke_user_session(p_session_id uuid)
@@ -213,7 +214,7 @@ BEGIN
   DELETE FROM auth.sessions WHERE id = p_session_id AND user_id = auth.uid();
 END;
 $$;
-REVOKE ALL ON FUNCTION revoke_user_session(uuid) FROM PUBLIC;
+REVOKE ALL ON FUNCTION revoke_user_session(uuid) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION revoke_user_session(uuid) TO authenticated;
 
 INSERT INTO role_permissions (role, permission, description) VALUES

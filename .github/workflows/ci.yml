@@ -31,7 +31,7 @@ jobs:
       - run: npm run build
 
   auth-e2e:
-    if: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
+    if: ${{ secrets.SUPABASE_SECRET_KEY != '' || secrets.SUPABASE_SERVICE_ROLE_KEY != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -39,6 +39,7 @@ jobs:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
