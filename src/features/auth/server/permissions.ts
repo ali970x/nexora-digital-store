@@ -11,6 +11,8 @@ export const permissions = [
   'admin.access',
   'identity.manage',
   'settings.manage',
+  'catalog.manage',
+  'catalog.read_draft',
   'platform.own'
 ] as const;
 
@@ -20,10 +22,17 @@ export const rolePermissions: Readonly<Record<UserRole, readonly Permission[]>> 
   customer: ['account.read', 'account.update'],
   reseller: ['account.read', 'account.update', 'reseller.access'],
   affiliate: ['account.read', 'account.update', 'affiliate.access'],
-  support: ['account.read', 'support.manage'],
+  support: ['account.read', 'support.manage', 'catalog.read_draft'],
   fulfiller: ['account.read', 'fulfillment.manage'],
   finance: ['account.read', 'finance.manage'],
-  admin: ['account.read', 'admin.access', 'identity.manage', 'settings.manage'],
+  admin: [
+    'account.read',
+    'admin.access',
+    'identity.manage',
+    'settings.manage',
+    'catalog.manage',
+    'catalog.read_draft'
+  ],
   owner: permissions
 };
 

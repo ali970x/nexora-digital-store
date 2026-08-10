@@ -43,6 +43,7 @@ import {
   Badge
 } from '@/components/ui/surfaces';
 import {useCurrencyStore} from '@/features/preferences/stores/currency-store';
+import {Link, useRouter} from '@/i18n/navigation';
 import type {AppLocale} from '@/i18n/routing';
 
 const categoryIcons = [Gamepad2, Tv, Gift, UsersRound, HeartHandshake];
@@ -67,6 +68,7 @@ export function MarketingHome() {
 
 function MarketingHero() {
   const t = useTranslations('Marketing.hero');
+  const router = useRouter();
   const [query, setQuery] = useState('');
   const products = t.raw('searchItems') as Array<{name: string; category: string; price: string}>;
   const results = useMemo(
@@ -105,7 +107,15 @@ function MarketingHero() {
           <p className="hero-lead">{t('description')}</p>
         </FadeInUp>
         <FadeInUp delay={0.12} className="live-search-wrap">
-          <div className="live-search">
+          <form
+            className="live-search"
+            onSubmit={(event) => {
+              event.preventDefault();
+              router.push(
+                query.trim() ? `/products?q=${encodeURIComponent(query.trim())}` : '/products'
+              );
+            }}
+          >
             <Search aria-hidden="true" />
             <label className="sr-only" htmlFor="live-product-search">
               {t('searchLabel')}
@@ -118,15 +128,21 @@ function MarketingHero() {
               autoComplete="off"
             />
             <kbd>⌘K</kbd>
-            <Button variant="gradient" size="md">
+            <Button variant="gradient" size="md" type="submit">
               {t('searchAction')}
               <ArrowUpRight aria-hidden="true" className="rtl:-scale-x-100" />
             </Button>
-          </div>
+          </form>
           {results.length > 0 ? (
             <div className="live-search-results" role="listbox">
               {results.map((result) => (
-                <button key={result.name} type="button" role="option" aria-selected="false">
+                <button
+                  key={result.name}
+                  type="button"
+                  role="option"
+                  aria-selected="false"
+                  onClick={() => router.push(`/products?q=${encodeURIComponent(result.name)}`)}
+                >
                   <span className="result-mark">{result.name.slice(0, 1)}</span>
                   <span>
                     <strong>{result.name}</strong>
@@ -147,9 +163,11 @@ function MarketingHero() {
           </div>
         </FadeInUp>
         <FadeInUp delay={0.16} className="hero-actions">
-          <Button variant="gradient" size="lg">
-            {t('primary')}
-            <ShoppingBag aria-hidden="true" />
+          <Button asChild variant="gradient" size="lg">
+            <Link href="/products">
+              {t('primary')}
+              <ShoppingBag aria-hidden="true" />
+            </Link>
           </Button>
           <Button variant="outline" size="lg">
             {t('secondary')}

@@ -3,6 +3,7 @@ import {
   bigint,
   boolean,
   check,
+  customType,
   foreignKey,
   index,
   integer,
@@ -64,6 +65,25 @@ export const notificationChannel = pgEnum('notification_channel', [
   'push',
   'in_app'
 ]);
+export const productStatus = pgEnum('product_status', [
+  'draft',
+  'active',
+  'out_of_stock',
+  'coming_soon',
+  'archived'
+]);
+export const fulfillmentMode = pgEnum('fulfillment_mode', ['auto', 'manual', 'auto_then_manual']);
+export const catalogMediaKind = pgEnum('catalog_media_kind', ['image', 'video', 'logo']);
+export const quoteRequestStatus = pgEnum('quote_request_status', [
+  'submitted',
+  'reviewing',
+  'quoted',
+  'accepted',
+  'declined',
+  'cancelled'
+]);
+
+const tsvector = customType<{data: string}>({dataType: () => 'tsvector'});
 
 export const locales = pgTable(
   'locales',
@@ -326,5 +346,352 @@ export const auditLogs = pgTable(
   (table) => [
     index('audit_logs_resource_idx').on(table.resourceType, table.resourceId, table.createdAt),
     index('audit_logs_actor_idx').on(table.actorId, table.createdAt)
+  ]
+);
+
+export const productTypes = pgTable(
+  'product_types',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    code: text('code').notNull(),
+    name: jsonb('name').$type<Record<string, string>>().notNull(),
+    description: jsonb('description').$type<Record<string, string>>().notNull().default({}),
+    iconName: text('icon_name'),
+    enabled: boolean('enabled').notNull().default(true),
+    sortOrder: integer('sort_order').notNull().default(0),
+    capabilities: jsonb('capabilities').$type<Record<string, boolean>>().notNull().default({}),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('product_types_code_uidx').on(table.code),
+    index('product_types_enabled_sort_idx').on(table.enabled, table.sortOrder),
+    check('product_types_code_ck', sql`${table.code} ~ '^[a-z][a-z0-9_]{1,47}$'`)
+  ]
+);
+
+export const categories = pgTable(
+  'categories',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    parentId: uuid('parent_id'),
+    slug: text('slug').notNull(),
+    name: jsonb('name').$type<Record<string, string>>().notNull(),
+    description: jsonb('description').$type<Record<string, string>>().notNull().default({}),
+    iconName: text('icon_name'),
+    imageUrl: text('image_url'),
+    sortOrder: integer('sort_order').notNull().default(0),
+    active: boolean('active').notNull().default(true),
+    seo: jsonb('seo').$type<Record<string, unknown>>().notNull().default({}),
+    createdBy: uuid('created_by').references(() => profiles.id, {onDelete: 'set null'}),
+    updatedBy: uuid('updated_by').references(() => profiles.id, {onDelete: 'set null'}),
+    deletedAt: timestamp('deleted_at', {withTimezone: true, mode: 'date'}),
+    ...timestamps
+  },
+  (table) => [
+    foreignKey({
+      name: 'categories_parent_id_fkey',
+      columns: [table.parentId],
+      foreignColumns: [table.id]
+    }).onDelete('restrict'),
+    uniqueIndex('categories_slug_active_uidx')
+      .on(table.slug)
+      .where(sql`${table.deletedAt} is null`),
+    index('categories_parent_sort_idx').on(table.parentId, table.sortOrder),
+    index('categories_active_sort_idx').on(table.active, table.sortOrder),
+    check(
+      'categories_not_self_parent_ck',
+      sql`${table.parentId} is null or ${table.parentId} <> ${table.id}`
+    )
+  ]
+);
+
+export const categoryClosure = pgTable(
+  'category_closure',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    ancestorId: uuid('ancestor_id')
+      .notNull()
+      .references(() => categories.id, {onDelete: 'cascade'}),
+    descendantId: uuid('descendant_id')
+      .notNull()
+      .references(() => categories.id, {onDelete: 'cascade'}),
+    depth: integer('depth').notNull(),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('category_closure_pair_uidx').on(table.ancestorId, table.descendantId),
+    index('category_closure_descendant_depth_idx').on(table.descendantId, table.depth),
+    index('category_closure_ancestor_depth_idx').on(table.ancestorId, table.depth),
+    check('category_closure_depth_ck', sql`${table.depth} >= 0`)
+  ]
+);
+
+export const products = pgTable(
+  'products',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    categoryId: uuid('category_id')
+      .notNull()
+      .references(() => categories.id, {onDelete: 'restrict'}),
+    productTypeCode: text('product_type_code')
+      .notNull()
+      .references(() => productTypes.code, {onUpdate: 'cascade'}),
+    slug: text('slug').notNull(),
+    name: jsonb('name').$type<Record<string, string>>().notNull(),
+    shortDescription: jsonb('short_description')
+      .$type<Record<string, string>>()
+      .notNull()
+      .default({}),
+    description: jsonb('description').$type<Record<string, string>>().notNull().default({}),
+    badges: jsonb('badges').$type<Array<Record<string, string>>>().notNull().default([]),
+    status: productStatus('status').notNull().default('draft'),
+    fulfillmentMode: fulfillmentMode('fulfillment_mode').notNull().default('manual'),
+    warrantyText: jsonb('warranty_text').$type<Record<string, string>>().notNull().default({}),
+    deliveryEstimate: jsonb('delivery_estimate')
+      .$type<Record<string, string>>()
+      .notNull()
+      .default({}),
+    inputSchema: jsonb('input_schema')
+      .$type<Array<Record<string, unknown>>>()
+      .notNull()
+      .default([]),
+    seo: jsonb('seo').$type<Record<string, unknown>>().notNull().default({}),
+    featured: boolean('featured').notNull().default(false),
+    sortOrder: integer('sort_order').notNull().default(0),
+    publishedAt: timestamp('published_at', {withTimezone: true, mode: 'date'}),
+    createdBy: uuid('created_by').references(() => profiles.id, {onDelete: 'set null'}),
+    updatedBy: uuid('updated_by').references(() => profiles.id, {onDelete: 'set null'}),
+    searchText: text('search_text').notNull().default(''),
+    searchVector: tsvector('search_vector')
+      .notNull()
+      .default(sql`''::tsvector`),
+    deletedAt: timestamp('deleted_at', {withTimezone: true, mode: 'date'}),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('products_slug_active_uidx')
+      .on(table.slug)
+      .where(sql`${table.deletedAt} is null`),
+    index('products_category_status_sort_idx').on(table.categoryId, table.status, table.sortOrder),
+    index('products_type_status_idx').on(table.productTypeCode, table.status),
+    index('products_published_idx').on(table.publishedAt, table.id)
+  ]
+);
+
+export const productVariants = pgTable(
+  'product_variants',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, {onDelete: 'cascade'}),
+    sku: text('sku').notNull(),
+    name: jsonb('name').$type<Record<string, string>>().notNull(),
+    priceAmount: bigint('price_amount', {mode: 'number'}).notNull(),
+    currencyCode: text('currency_code')
+      .notNull()
+      .references(() => currencies.code, {onUpdate: 'cascade'}),
+    stockQuantity: integer('stock_quantity').notNull().default(0),
+    unlimitedStock: boolean('unlimited_stock').notNull().default(false),
+    regionCode: text('region_code'),
+    durationDays: integer('duration_days'),
+    denominationAmount: bigint('denomination_amount', {mode: 'number'}),
+    denominationCurrencyCode: text('denomination_currency_code').references(() => currencies.code, {
+      onUpdate: 'cascade'
+    }),
+    accountType: text('account_type'),
+    attributes: jsonb('attributes').$type<Record<string, unknown>>().notNull().default({}),
+    active: boolean('active').notNull().default(true),
+    sortOrder: integer('sort_order').notNull().default(0),
+    deletedAt: timestamp('deleted_at', {withTimezone: true, mode: 'date'}),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('product_variants_sku_active_uidx')
+      .on(table.sku)
+      .where(sql`${table.deletedAt} is null`),
+    index('product_variants_product_active_sort_idx').on(
+      table.productId,
+      table.active,
+      table.sortOrder
+    ),
+    index('product_variants_region_idx').on(table.regionCode),
+    index('product_variants_price_idx').on(table.currencyCode, table.priceAmount),
+    check('product_variants_price_ck', sql`${table.priceAmount} >= 0`),
+    check('product_variants_stock_ck', sql`${table.stockQuantity} >= 0`)
+  ]
+);
+
+export const productVariantCosts = pgTable(
+  'product_variant_costs',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    variantId: uuid('variant_id')
+      .notNull()
+      .references(() => productVariants.id, {onDelete: 'cascade'}),
+    costAmount: bigint('cost_amount', {mode: 'number'}).notNull(),
+    currencyCode: text('currency_code')
+      .notNull()
+      .references(() => currencies.code, {onUpdate: 'cascade'}),
+    source: text('source').notNull().default('manual'),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('product_variant_costs_variant_uidx').on(table.variantId),
+    check('product_variant_costs_amount_ck', sql`${table.costAmount} >= 0`)
+  ]
+);
+
+export const productMedia = pgTable(
+  'product_media',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, {onDelete: 'cascade'}),
+    variantId: uuid('variant_id').references(() => productVariants.id, {onDelete: 'cascade'}),
+    kind: catalogMediaKind('kind').notNull().default('image'),
+    url: text('url'),
+    storagePath: text('storage_path'),
+    altText: jsonb('alt_text').$type<Record<string, string>>().notNull().default({}),
+    blurDataUrl: text('blur_data_url'),
+    sortOrder: integer('sort_order').notNull().default(0),
+    isPrimary: boolean('is_primary').notNull().default(false),
+    deletedAt: timestamp('deleted_at', {withTimezone: true, mode: 'date'}),
+    ...timestamps
+  },
+  (table) => [
+    index('product_media_product_sort_idx').on(table.productId, table.sortOrder),
+    index('product_media_variant_idx').on(table.variantId),
+    check('product_media_source_ck', sql`num_nonnulls(${table.url}, ${table.storagePath}) = 1`)
+  ]
+);
+
+export const productRelations = pgTable(
+  'product_relations',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, {onDelete: 'cascade'}),
+    relatedProductId: uuid('related_product_id')
+      .notNull()
+      .references(() => products.id, {onDelete: 'cascade'}),
+    relationType: text('relation_type').notNull().default('related'),
+    score: integer('score').notNull().default(0),
+    sortOrder: integer('sort_order').notNull().default(0),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('product_relations_pair_uidx').on(
+      table.productId,
+      table.relatedProductId,
+      table.relationType
+    ),
+    index('product_relations_related_idx').on(table.relatedProductId),
+    check('product_relations_not_self_ck', sql`${table.productId} <> ${table.relatedProductId}`)
+  ]
+);
+
+export const smmProductConfigs = pgTable(
+  'smm_product_configs',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    variantId: uuid('variant_id')
+      .notNull()
+      .references(() => productVariants.id, {onDelete: 'cascade'}),
+    minQuantity: integer('min_quantity').notNull(),
+    maxQuantity: integer('max_quantity').notNull(),
+    quantityStep: integer('quantity_step').notNull().default(1),
+    pricePer1000Amount: bigint('price_per_1000_amount', {mode: 'number'}).notNull(),
+    currencyCode: text('currency_code')
+      .notNull()
+      .references(() => currencies.code, {onUpdate: 'cascade'}),
+    dripFeedEnabled: boolean('drip_feed_enabled').notNull().default(false),
+    maxDripRuns: integer('max_drip_runs'),
+    minDripIntervalMinutes: integer('min_drip_interval_minutes'),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('smm_product_configs_variant_uidx').on(table.variantId),
+    check(
+      'smm_configs_quantity_ck',
+      sql`${table.minQuantity} > 0 and ${table.maxQuantity} >= ${table.minQuantity}`
+    )
+  ]
+);
+
+export const serviceProductConfigs = pgTable(
+  'service_product_configs',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, {onDelete: 'cascade'}),
+    requirementSchema: jsonb('requirement_schema')
+      .$type<Array<Record<string, unknown>>>()
+      .notNull()
+      .default([]),
+    milestoneTemplates: jsonb('milestone_templates')
+      .$type<Array<Record<string, unknown>>>()
+      .notNull()
+      .default([]),
+    includedRevisions: integer('included_revisions').notNull().default(0),
+    customQuoteRequired: boolean('custom_quote_required').notNull().default(true),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('service_product_configs_product_uidx').on(table.productId),
+    check('service_configs_revisions_ck', sql`${table.includedRevisions} >= 0`)
+  ]
+);
+
+export const serviceQuoteRequests = pgTable(
+  'service_quote_requests',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    profileId: uuid('profile_id')
+      .notNull()
+      .references(() => profiles.id, {onDelete: 'restrict'}),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, {onDelete: 'restrict'}),
+    variantId: uuid('variant_id').references(() => productVariants.id, {onDelete: 'set null'}),
+    requirements: jsonb('requirements').$type<Record<string, unknown>>().notNull(),
+    budgetMinAmount: bigint('budget_min_amount', {mode: 'number'}),
+    budgetMaxAmount: bigint('budget_max_amount', {mode: 'number'}),
+    currencyCode: text('currency_code').references(() => currencies.code, {onUpdate: 'cascade'}),
+    desiredDueAt: timestamp('desired_due_at', {withTimezone: true, mode: 'date'}),
+    status: quoteRequestStatus('status').notNull().default('submitted'),
+    assignedTo: uuid('assigned_to').references(() => profiles.id, {onDelete: 'set null'}),
+    deletedAt: timestamp('deleted_at', {withTimezone: true, mode: 'date'}),
+    ...timestamps
+  },
+  (table) => [
+    index('service_quote_requests_profile_created_idx').on(table.profileId, table.createdAt),
+    index('service_quote_requests_queue_idx').on(table.status, table.createdAt),
+    index('service_quote_requests_assignee_idx').on(table.assignedTo, table.status)
+  ]
+);
+
+export const recentlyViewedProducts = pgTable(
+  'recently_viewed_products',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    profileId: uuid('profile_id')
+      .notNull()
+      .references(() => profiles.id, {onDelete: 'cascade'}),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, {onDelete: 'cascade'}),
+    viewedAt: timestamp('viewed_at', {withTimezone: true, mode: 'date'}).notNull().defaultNow(),
+    ...timestamps
+  },
+  (table) => [
+    uniqueIndex('recently_viewed_products_profile_product_uidx').on(
+      table.profileId,
+      table.productId
+    ),
+    index('recently_viewed_products_profile_viewed_idx').on(table.profileId, table.viewedAt)
   ]
 );

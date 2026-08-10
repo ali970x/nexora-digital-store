@@ -29,6 +29,34 @@
       "when": 1785893400000,
       "tag": "0003_idempotency_policy",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786352400000,
+      "tag": "0004_catalog",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786356000000,
+      "tag": "0005_catalog_hardening",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786357800000,
+      "tag": "0006_catalog_search_fix",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1786359600000,
+      "tag": "0007_catalog_typo_tolerance",
+      "breakpoints": true
     }
   ]
 }

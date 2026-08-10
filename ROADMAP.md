@@ -42,6 +42,8 @@ Each phase is a production-capable vertical increment. A phase is accepted only 
 
 ## Phase 2 — Catalog, media, search, and admin catalog
 
+**Status:** Complete (2026-08-10). See `PHASE_2.md` for the implementation and verification record.
+
 ### Deliverables
 
 - Nested categories; five product types; variants, option schemas, player ID/URL/file fields, galleries, bundles, add-ons, related items.

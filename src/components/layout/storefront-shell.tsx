@@ -37,7 +37,7 @@ import {
 import {CurrencySwitcher} from '@/features/preferences/components/currency-switcher';
 import {LocaleSwitcher} from '@/features/preferences/components/language-switcher';
 import {ThemeSwitcher} from '@/features/preferences/components/theme-switcher';
-import {Link} from '@/i18n/navigation';
+import {Link, useRouter} from '@/i18n/navigation';
 
 const categoryIcons = [Gamepad2, Tv, Gift, UsersRound, HeartHandshake];
 
@@ -55,18 +55,24 @@ export function StorefrontShell({children}: {children: ReactNode}) {
 function StorefrontHeader() {
   const t = useTranslations('Navigation');
   const c = useTranslations('Categories');
+  const router = useRouter();
   const [commandOpen, setCommandOpen] = useState(false);
   const categories = [
-    {title: c('gameTitle'), detail: c('gameDescription')},
-    {title: c('subscriptionTitle'), detail: c('subscriptionDescription')},
-    {title: c('giftTitle'), detail: c('giftDescription')},
-    {title: c('socialTitle'), detail: c('socialDescription')},
-    {title: c('serviceTitle'), detail: c('serviceDescription')}
+    {title: c('gameTitle'), detail: c('gameDescription'), href: '/products?type=topup'},
+    {
+      title: c('subscriptionTitle'),
+      detail: c('subscriptionDescription'),
+      href: '/products?type=subscription'
+    },
+    {title: c('giftTitle'), detail: c('giftDescription'), href: '/products?type=giftcard'},
+    {title: c('socialTitle'), detail: c('socialDescription'), href: '/products?type=smm'},
+    {title: c('serviceTitle'), detail: c('serviceDescription'), href: '/products?type=service'}
   ];
   const commands: CommandItem[] = categories.map((category, index) => ({
     id: category.title,
     label: category.title,
     detail: category.detail,
+    onSelect: () => router.push(category.href),
     icon: (() => {
       const Icon = categoryIcons[index] ?? Sparkles;
       return <Icon aria-hidden="true" />;
@@ -96,7 +102,7 @@ function StorefrontHeader() {
                   {categories.map((category, index) => {
                     const Icon = categoryIcons[index] ?? Sparkles;
                     return (
-                      <Link href="/#categories" key={category.title}>
+                      <Link href={category.href} key={category.title}>
                         <span>
                           <Icon aria-hidden="true" />
                         </span>
@@ -113,7 +119,7 @@ function StorefrontHeader() {
                     <Sparkles aria-hidden="true" />
                     {t('megaNote')}
                   </span>
-                  <Link href="/#categories">{t('browseAll')}</Link>
+                  <Link href="/products">{t('browseAll')}</Link>
                 </div>
               </PopoverContent>
             </Popover>
@@ -182,7 +188,11 @@ function StorefrontHeader() {
   );
 }
 
-function MobileMenu({categories}: {categories: Array<{title: string; detail: string}>}) {
+function MobileMenu({
+  categories
+}: {
+  categories: Array<{title: string; detail: string; href: string}>;
+}) {
   const t = useTranslations('Navigation');
   return (
     <Sheet>
@@ -205,13 +215,13 @@ function MobileMenu({categories}: {categories: Array<{title: string; detail: str
           {categories.map((category, index) => {
             const Icon = categoryIcons[index] ?? Sparkles;
             return (
-              <a key={category.title} href="#categories">
+              <Link key={category.title} href={category.href}>
                 <Icon aria-hidden="true" />
                 <span>
                   <strong>{category.title}</strong>
                   <small>{category.detail}</small>
                 </span>
-              </a>
+              </Link>
             );
           })}
         </nav>
@@ -299,10 +309,10 @@ function MobileTabBar() {
         <Home />
         <span>{t('home')}</span>
       </a>
-      <a href="#categories">
+      <Link href="/products">
         <PackageSearch />
         <span>{t('products')}</span>
-      </a>
+      </Link>
       <a href="#wallet" className="mobile-wallet-action">
         <span>
           <WalletCards />

@@ -7,6 +7,7 @@ import {
   KeyRound,
   LayoutDashboard,
   Menu,
+  PackageSearch,
   Settings,
   ShieldCheck,
   UserRound,
@@ -35,6 +36,7 @@ const accountItems = [
 
 const adminItems = [
   {key: 'overview', href: '/admin', icon: LayoutDashboard},
+  {key: 'catalog', href: '/admin/catalog', icon: PackageSearch},
   {key: 'identity', href: '/admin/identity', icon: Users},
   {key: 'settings', href: '/admin/settings', icon: Settings},
   {key: 'security', href: '/admin/security', icon: ShieldCheck}

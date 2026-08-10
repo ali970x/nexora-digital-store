@@ -52,6 +52,8 @@ const permissionMap: Record<Permission, true> = {
   'admin.access': true,
   'identity.manage': true,
   'settings.manage': true,
+  'catalog.manage': true,
+  'catalog.read_draft': true,
   'platform.own': true
 };
 
