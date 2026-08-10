@@ -13,6 +13,7 @@ import {Checkbox, Input, OtpField} from '@/components/ui/form-controls';
 import {Alert, Tabs, TabsList, TabsTrigger} from '@/components/ui/surfaces';
 import {Link} from '@/i18n/navigation';
 import {publicEnvironment} from '@/lib/env/public';
+import {cn} from '@/lib/utils';
 import {
   requestPasswordResetAction,
   resetPasswordAction,
@@ -138,7 +139,13 @@ export function AuthPanel({mode, factorId}: {mode: AuthMode; factorId?: string})
 
       {mode === 'sign-in' ? (
         <Tabs value={method} onValueChange={(value) => setMethod(value as typeof method)}>
-          <TabsList className="auth-methods" aria-label={t('methodLabel')}>
+          <TabsList
+            className={cn(
+              'auth-methods',
+              !publicEnvironment.NEXT_PUBLIC_PHONE_OTP_ENABLED && 'auth-methods--compact'
+            )}
+            aria-label={t('methodLabel')}
+          >
             <TabsTrigger value="password">
               <KeyRound aria-hidden="true" />
               {t('password')}
@@ -265,7 +272,12 @@ export function AuthPanel({mode, factorId}: {mode: AuthMode; factorId?: string})
           <div className="auth-divider">
             <span>{t('orContinue')}</span>
           </div>
-          <div className="auth-social">
+          <div
+            className={cn(
+              'auth-social',
+              !publicEnvironment.NEXT_PUBLIC_APPLE_OAUTH_ENABLED && 'auth-social--single'
+            )}
+          >
             <form action={startOAuthAction.bind(null, 'google', locale)}>
               <Button type="submit" variant="outline">
                 <span className="auth-google" aria-hidden="true">

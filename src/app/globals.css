@@ -4744,6 +4744,9 @@ html[lang='ar'] .section-kicker {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 }
+.auth-methods--compact {
+  grid-template-columns: repeat(2, 1fr);
+}
 .auth-methods button {
   gap: var(--space-1);
 }
@@ -4782,9 +4785,15 @@ html[lang='ar'] .section-kicker {
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-3);
 }
+.auth-social--single {
+  grid-template-columns: 1fr;
+}
 .auth-social form,
 .auth-social button {
   inline-size: 100%;
+}
+.auth-social--single button {
+  min-block-size: var(--space-12);
 }
 .auth-google {
   font-weight: 850;
